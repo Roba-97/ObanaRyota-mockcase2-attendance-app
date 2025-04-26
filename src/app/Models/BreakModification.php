@@ -1,0 +1,17 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class BreakModification extends Model
+{
+    use HasFactory;
+
+    protected $fillable = [
+        'modification_id',
+        'modified_start_at',
+        'modified_end_at',
+    ];
+}
