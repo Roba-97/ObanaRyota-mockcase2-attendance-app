@@ -1,0 +1,30 @@
+html {
+    font-size: 62.25%;
+}
+
+.header {
+    background-color: #000000;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    min-height: 80px;
+}
+
+.header__heading {
+    display: none;
+}
+
+.header__logo {
+    background-image: url(../img/logo.svg);
+    background-size: cover;
+    display: inline-block;
+    margin: auto 20px;
+    width: 300px;
+    height: 32px;
+}
+
+@media screen and (max-width: 860px) {
+    html {
+        font-size: 43.75%;  /* タブレットでのフォントサイズは通常の70%(10px -> 7px)に*/
+    }
+}
