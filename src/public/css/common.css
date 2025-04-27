@@ -7,7 +7,9 @@ html {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    min-height: 80px;
+    height: 80px;
+    position: sticky;
+    top: 0;
 }
 
 .header__heading {
@@ -21,6 +23,45 @@ html {
     margin: auto 20px;
     width: 300px;
     height: 32px;
+}
+
+.header__nav {
+    margin-right: 20px;
+}
+
+.header__nav-list {
+    display: flex;
+    justify-content: space-around;
+    font-size: 2.4rem;
+}
+
+.header__nav-item a {
+    display: inline-block;
+    padding: 5px 15px;
+    color: #FFFFFF;
+    text-decoration: none;
+    font-size: inherit;
+}
+
+.header__nav-logout {
+    display: inline-block;
+    padding: 5px 15px;
+    background: inherit;
+    border: none;
+    color: #FFFFFF;
+    font-size: inherit;
+}
+
+.content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.content--after-login {
+    height: calc(100vh - 80px);
+    background-color: #F0EFF2;
+    overflow: auto;
 }
 
 @media screen and (max-width: 860px) {

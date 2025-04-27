@@ -16,9 +16,15 @@
         <a class="header__logo" href="/"></a>
         @yield('header')
     </header>
+    @if( !in_array(Route::currentRouteName(), ['register', 'login', 'verification.notice']) )
+    <main class="content--after-login">
+        @yield('content')
+    </main>
+    @else
     <main class="content">
         @yield('content')
     </main>
+    @endif
 </body>
 
 </html>
