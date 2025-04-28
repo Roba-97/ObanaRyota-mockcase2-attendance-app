@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Modification extends Model
 {
@@ -15,6 +14,8 @@ class Modification extends Model
         'modified_punch_in',
         'modified_punch_out',
         'comment',
+        'application_date',
+        'approval_date',
         'is_approved',
     ];
 
