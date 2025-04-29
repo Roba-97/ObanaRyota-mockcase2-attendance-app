@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AttendanceController;
+use App\Http\Controllers\StampController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,3 +16,7 @@ use App\Http\Controllers\AttendanceController;
 */
 
 Route::get('/attendance', [AttendanceController::class, 'index']);
+Route::post('/attendance/punch_in', [StampController::class, 'createStamp']);
+Route::patch('/attendance/punch_out', [StampController::class, 'updateStamp']);
+Route::post('/attendance/break_in', [StampController::class, 'createBreak']);
+Route::patch('/attendance/break_out', [StampController::class, 'updateBreak']);
