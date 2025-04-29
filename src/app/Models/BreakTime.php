@@ -15,5 +15,6 @@ class BreakTime extends Model
         'attendance_id',
         'start_at',
         'end_at',
+        'is_ended',
     ];
 }

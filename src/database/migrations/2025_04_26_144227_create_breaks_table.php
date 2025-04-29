@@ -18,6 +18,7 @@ class CreateBreaksTable extends Migration
             $table->foreignId('attendance_id')->constrained();
             $table->time('start_at');
             $table->time('end_at');
+            $table->boolean('is_ended')->default(false);
             $table->timestamps();
         });
     }
