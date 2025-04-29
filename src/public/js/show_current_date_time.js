@@ -8,7 +8,7 @@ function showCurrentDateTime() {
   const day = dayArray[now.getDay()];
   const today = `${year}年${month}月${date}日(${day})`;
 
-  const hour = now.getHours();
+  const hour = String(now.getHours()).padStart(2, '0');
   const minute = String(now.getMinutes()).padStart(2, '0');
   const time = `${hour}：${minute}`;
 

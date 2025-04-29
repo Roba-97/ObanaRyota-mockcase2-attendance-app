@@ -39,19 +39,39 @@
     font-weight: 700;
 }
 
+.attendance__form-flex {
+    display: flex;
+    justify-content: space-between;
+}
+
+.attendance__form-flex .attendance__form:first-of-type {
+    margin-right: 75px;
+}
+
 .attendance__form {
     margin-top: 40px;
 }
 
 .attendance__button {
     background-color: #000000;
+    border: none;
     border-radius: 20px;
     color: #FFFFFF;
     font-size: 3.2rem;
     font-weight: 700;
     text-align: center;
-    text-indent: 20px;
-    letter-spacing: 20px;
     width: 220px;
     padding: 20px 0;
+}
+
+.attendance__button--break {
+    background-color: #FFFFFF;
+    color: #000000;
+}
+
+.attendance__message {
+    margin: 90px 0 0;
+    font-size: 2.6rem;
+    font-weight: 700;
+    text-align: center;
 }
