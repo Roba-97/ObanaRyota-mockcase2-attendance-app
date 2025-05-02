@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -15,5 +16,31 @@ class AttendanceController extends Controller
             $status = Auth::user()->findTodayAttendance()->status;
             return view('attendance_register', ['status' => $status]);
         }
+    }
+
+    public function showList(Request $request)
+    {
+        $monthInput = $request->input('month');
+        $sessionKey = 'displayedMonth';
+
+        if ($monthInput === null) {
+            session()->forget('displayMonth');
+            session()->put($sessionKey, Carbon::today());
+        } else {
+            if ($monthInput === 'next') {
+                session()->put($sessionKey, session()->get($sessionKey)->addMonth(1));
+            }
+            if ($monthInput === 'previous') {
+                session()->put($sessionKey, session()->get($sessionKey)->subMonth(1));
+            }
+        }
+
+        $displayedMonth = session()->get('displayedMonth')->format('Y/m');
+
+        $year = session()->get('displayedMonth')->year;
+        $month = session()->get('displayedMonth')->month;
+        $attendances = Auth::user()->attendancesByMonth($year, $month);
+
+        return view('attendance_list', compact('displayedMonth', 'attendances'));
     }
 }

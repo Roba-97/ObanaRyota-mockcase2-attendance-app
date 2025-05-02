@@ -26,7 +26,7 @@
         </div>
         <div class="attendance-list__show-month">
             <img class="month-nav__icon-calender" src="{{ asset('img/calender.png')}}" alt="">
-            <span>2023/06</span>
+            <span>{{ $displayedMonth }}</span>
         </div>
         <div class="attendance-list__next-month">
             <a href="/attendance/list?month=next">
@@ -44,16 +44,20 @@
             <th class="attendance-list__table-header">合計</th>
             <th class="attendance-list__table-header">詳細</th>
         </tr>
-        @for ($i = 0; $i < 25; $i++)
-            <tr class="attendance-list__table-row">
-            <td class="attendance-list__table-text">06/01(木)</td>
-            <td class="attendance-list__table-text">09:00</td>
-            <td class="attendance-list__table-text">18:00</td>
-            <td class="attendance-list__table-text">1:00</td>
-            <td class="attendance-list__table-text">8:00</td>
-            <td class="attendance-list__table-text attendance-list__table-text--bold">詳細</td>
-            </tr>
-            @endfor
+        @foreach ($attendances as $attendance)
+        <tr class="attendance-list__table-row">
+            @php
+            $weekDays = ['日', '月', '火', '水', '木', '金', '土'];
+            $date = \Carbon\Carbon::parse($attendance->date);
+            @endphp
+            <td class="attendance-list__table-text">{{ $date->format('m/d') }}({{ $weekDays[$date->dayOfWeek] }})</td>
+            <td class="attendance-list__table-text">{{ \Carbon\Carbon::parse($attendance->punch_in)->format('H:i'); }}</td>
+            <td class="attendance-list__table-text">{{ \Carbon\Carbon::parse($attendance->punch_out)->format('H:i') }}</td>
+            <td class="attendance-list__table-text">{{ $attendance->break_duration }}</td>
+            <td class="attendance-list__table-text">{{ $attendance->work_duration }}</td>
+            <td class="attendance-list__table-text attendance-list__table-text--bold"><a href="/attendance/{{ $attendance->id }}">詳細</a></td>
+        </tr>
+        @endforeach
     </table>
 </div>
 

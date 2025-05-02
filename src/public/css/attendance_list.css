@@ -77,6 +77,7 @@
     font-weight: 700;
     text-align: center;
 }
-.attendance-list__table-text:last-of-type {
+.attendance-list__table-text:last-of-type a {
     color: #000000;
+    text-decoration: none;
 }
