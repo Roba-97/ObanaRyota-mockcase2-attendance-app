@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Attendance;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -35,12 +36,17 @@ class AttendanceController extends Controller
             }
         }
 
-        $displayedMonth = session()->get('displayedMonth')->format('Y/m');
+        $displayedMonth = session()->get($sessionKey)->format('Y/m');
 
-        $year = session()->get('displayedMonth')->year;
-        $month = session()->get('displayedMonth')->month;
+        $year = session()->get($sessionKey)->year;
+        $month = session()->get($sessionKey)->month;
         $attendances = Auth::user()->attendancesByMonth($year, $month);
 
         return view('attendance_list', compact('displayedMonth', 'attendances'));
+    }
+
+    public function showDetail(Attendance $attendance)
+    {
+        return view('attendance_detail', compact('attendance'));
     }
 }

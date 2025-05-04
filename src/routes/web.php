@@ -22,4 +22,5 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/attendance/break_in', [StampController::class, 'createBreak']);
     Route::patch('/attendance/break_out', [StampController::class, 'updateBreak']);
     Route::get('/attendance/list', [AttendanceController::class, 'showList']);
+    Route::get('/attendance/{attendance}', [AttendanceController::class, 'showDetail']);
 });

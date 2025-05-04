@@ -89,4 +89,7 @@ html {
     html {
         font-size: 43.75%;  /* タブレットでのフォントサイズは通常の70%(10px -> 7px)に*/
     }
+    .content-wrapper {
+        width: 650px;
+    }
 }
