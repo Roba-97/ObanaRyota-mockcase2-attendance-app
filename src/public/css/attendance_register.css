@@ -30,6 +30,7 @@
     color: #000000;
     font-size: 4rem;
     font-weight: 400;
+    text-align: center;
 }
 
 .attendance__time {
@@ -37,6 +38,7 @@
     color: #000000;
     font-size: 8rem;
     font-weight: 700;
+    text-align: center;
 }
 
 .attendance__form-flex {

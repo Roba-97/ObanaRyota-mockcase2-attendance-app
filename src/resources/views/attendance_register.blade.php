@@ -6,6 +6,7 @@
 
 @section('css')
 <link rel="stylesheet" href="{{ asset('css/attendance_register.css')}}">
+@livewireStyles
 @endsection
 
 @section('header')
@@ -32,8 +33,7 @@
             @default
             @endswitch
         </p>
-        <p id="current_date" class="attendance__date"></p>
-        <p id="current_time" class="attendance__time"></p>
+        <livewire:current-date-time />
         @switch($status)
         @case(0)
         <form class="attendance__form" action="/attendance/punch_in" method="post">
@@ -68,5 +68,5 @@
         @endswitch
     </div>
 </div>
-<script src="{{ asset('js/show_current_date_time.js') }}"></script>
+@livewireScripts
 @endsection
