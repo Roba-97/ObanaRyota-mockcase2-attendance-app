@@ -16,6 +16,7 @@ class CreateBreakModificationsTable extends Migration
         Schema::create('break_modifications', function (Blueprint $table) {
             $table->id();
             $table->foreignId('modification_id')->constrained();
+            $table->foreignId('break_id')->constrained();
             $table->time('modified_start_at');
             $table->time('modified_end_at');
             $table->timestamps();

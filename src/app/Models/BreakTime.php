@@ -17,4 +17,14 @@ class BreakTime extends Model
         'end_at',
         'is_ended',
     ];
+
+    public function Attendance()
+    {
+        return $this->belongsTo(Attendance::class);
+    }
+
+    public function breakModifications()
+    {
+        return $this->hasMany(BreakModification::class);
+    }
 }
