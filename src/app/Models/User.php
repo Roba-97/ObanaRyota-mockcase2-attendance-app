@@ -52,6 +52,7 @@ class User extends Authenticatable
         return $this->attendances()
             ->whereYear('date', $year)
             ->whereMonth('date', $month)
+            ->orderBy('date')
             ->get();
     }
 
