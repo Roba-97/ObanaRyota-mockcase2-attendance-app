@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\StampController;
 use App\Http\Controllers\ModificationController;
+use App\Models\Attendance;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,4 +26,5 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/attendance/list', [AttendanceController::class, 'showList']);
     Route::get('/attendance/{attendance}', [AttendanceController::class, 'showDetail']);
     Route::post('/stamp_correction_request/{attendance}', [ModificationController::class, 'requestModification']);
+    Route::get('/stamp_correction_request/list', [AttendanceController::class, 'showModificationList']);
 });

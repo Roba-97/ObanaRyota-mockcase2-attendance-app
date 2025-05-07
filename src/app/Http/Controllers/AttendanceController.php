@@ -49,4 +49,9 @@ class AttendanceController extends Controller
     {
         return view('attendance_detail', compact('attendance'));
     }
+
+    public function showModificationList()
+    {
+        return view('modification_list');
+    }
 }
