@@ -28,6 +28,7 @@
 }
 
 .form__table-cel {
+    padding: 20px 0;
     color: #000000;
     font-size: 1.6rem;
     font-weight: 700;
@@ -58,6 +59,10 @@
     width: 120px;
 }
 
+.form__input[type="time"]::-webkit-calendar-picker-indicator {
+    display: none;
+}
+
 .form__textarea {
     padding: 10px 12px;
     border: solid 1px #D9D9D9;
@@ -78,6 +83,13 @@
     border-radius: 5px;
     color: #FFFFFF;
     font-size: 2.2rem;
+    font-weight: 700;
+}
+
+.form__error-message {
+    margin: 10px 0 0 0;
+    color: #FF000080;
+    font-size: 1.2rem;
     font-weight: 700;
 }
 
