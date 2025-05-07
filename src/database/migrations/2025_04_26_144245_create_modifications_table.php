@@ -19,8 +19,8 @@ class CreateModificationsTable extends Migration
             $table->time('modified_punch_in');
             $table->time('modified_punch_out');
             $table->text('comment');
-            $table->time('application_date');
-            $table->time('approval_date');
+            $table->date('application_date');
+            $table->date('approval_date')->nullable();
             $table->boolean('is_approved')->default(false);
             $table->timestamps();
         });

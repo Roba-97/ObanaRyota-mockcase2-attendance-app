@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\StampController;
+use App\Http\Controllers\ModificationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,4 +24,5 @@ Route::group(['middleware' => ['auth']], function () {
     Route::patch('/attendance/break_out', [StampController::class, 'updateBreak']);
     Route::get('/attendance/list', [AttendanceController::class, 'showList']);
     Route::get('/attendance/{attendance}', [AttendanceController::class, 'showDetail']);
+    Route::post('/stamp_correction_request/{attendance}', [ModificationController::class, 'requestModification']);
 });
