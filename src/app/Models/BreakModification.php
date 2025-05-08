@@ -21,7 +21,7 @@ class BreakModification extends Model
         return $this->belongsTo(Modification::class);
     }
 
-    public function modificationTarget()
+    public function break()
     {
         return $this->belongsTo(BreakTime::class);
     }

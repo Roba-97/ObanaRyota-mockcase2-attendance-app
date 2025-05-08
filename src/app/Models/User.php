@@ -47,6 +47,11 @@ class User extends Authenticatable
         return $this->hasMany(Attendance::class);
     }
 
+    public function modifications()
+    {
+        return $this->hasManyThrough(Modification::class, Attendance::class);
+    }
+
     public function attendancesByMonth($year, $month)
     {
         return $this->attendances()

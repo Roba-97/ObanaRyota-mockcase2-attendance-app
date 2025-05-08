@@ -19,7 +19,7 @@ class Modification extends Model
         'is_approved',
     ];
 
-    public function modificationTarget()
+    public function attendance()
     {
         return $this->belongsTo(Attendance::class);
     }

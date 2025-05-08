@@ -47,7 +47,7 @@
     padding: 12px 15px;
     text-align: center;
 }
-.modification-list__table-cel:last-of-type {
+.modification-list__table-cel:last-of-type a{
     color: #000000;
     text-decoration: none;
 }

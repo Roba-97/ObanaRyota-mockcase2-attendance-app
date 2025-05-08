@@ -28,11 +28,10 @@ class Attendance extends Model
         return $this->hasMany(BreakTime::class);
     }
 
-    public function modification()
+    public function modifications()
     {
-        return $this->hasOne(Modification::class);
+        return $this->hasMany(Modification::class);
     }
-
 
     public function calculateTotalBreakMinutes()
     {
