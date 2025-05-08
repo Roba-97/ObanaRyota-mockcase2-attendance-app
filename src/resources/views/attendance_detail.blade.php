@@ -5,7 +5,7 @@
 @endsection
 
 @section('css')
-<link rel="stylesheet" href="{{ asset('css/attendance_detail.css')}}">
+<link rel="stylesheet" href="{{ asset('css/attendance_detail.css') }}">
 @endsection
 
 @section('header')
@@ -45,8 +45,10 @@
                         <input class="form__input" name="modified_punch_out" type="time"
                             value="{{ old('modified_punch_out', \Carbon\Carbon::parse($attendance->punch_out)->format('H:i')) }}">
                     </div>
-                    @if($errors->has('modified_punch_in') || $errors->has('modified_punch_out'))
-                    <p class="form__error-message">{{ $errors->has('modified_punch_in') ? $errors->first('modified_punch_in') : $errors->first('modified_punch_out') }}</p>
+                    @if ($errors->has('modified_punch_in') || $errors->has('modified_punch_out'))
+                    <p class="form__error-message">
+                        {{ $errors->has('modified_punch_in') ? $errors->first('modified_punch_in') : $errors->first('modified_punch_out') }}
+                    </p>
                     @endif
                 </td>
             </tr>
@@ -61,22 +63,29 @@
                         <input class="form__input" name="modified_break_out[]" type="time"
                             value="{{ old("modified_break_out.$index", \Carbon\Carbon::parse($break->end_at)->format('H:i')) }}">
                     </div>
-                    @if($errors->has("modified_break_in.$index") || $errors->has("modified_break_out"))
-                    <p class="form__error-message">{{ $errors->has("modified_break_in.$index") ? $errors->first("modified_break_in.$index") : $errors->first("modified_break_out") }}</p>
+                    @if ($errors->has("modified_break_in.$index") || $errors->has('modified_break_out'))
+                    <p class="form__error-message">
+                        {{ $errors->has("modified_break_in.$index") ? $errors->first("modified_break_in.$index") : $errors->first('modified_break_out') }}
+                    </p>
                     @endif
                 </td>
             </tr>
             @endforeach
             <tr class="form__table-row">
-                <th class="form__table-header">休憩{{ $attendance->breaks->isNotEmpty() ? $attendance->breaks->count() + 1 : '' }}</th>
+                <th class="form__table-header">
+                    休憩{{ $attendance->breaks->isNotEmpty() ? $attendance->breaks->count() + 1 : '' }}</th>
                 <td class="form__table-cel">
                     <div class="form__time-group">
-                        <input class="form__input" name="additional_break_in" type="time" value="{{ old('additional_break_in') }}">
+                        <input class="form__input" name="additional_break_in" type="time"
+                            value="{{ old('additional_break_in') }}">
                         <span class="form__table-text form__table-text--time-separator">~</span>
-                        <input class="form__input" name="additional_break_out" type="time" value="{{ old('additional_break_out') }}">
+                        <input class="form__input" name="additional_break_out" type="time"
+                            value="{{ old('additional_break_out') }}">
                     </div>
-                    @if($errors->has('additional_break_in') || $errors->has('additional_break_out'))
-                    <p class="form__error-message">{{ $errors->has('additional_break_in') ? $errors->first('additional_break_in') : $errors->first('additional_break_out') }}</p>
+                    @if ($errors->has('additional_break_in') || $errors->has('additional_break_out'))
+                    <p class="form__error-message">
+                        {{ $errors->has('additional_break_in') ? $errors->first('additional_break_in') : $errors->first('additional_break_out') }}
+                    </p>
                     @endif
                 </td>
             </tr>
@@ -90,7 +99,21 @@
                 </td>
             </tr>
         </table>
+        @php
+        $modifications = $attendance->modifications;
+        foreach ($modifications as $modification) {
+        if (!$modification->is_approved) {
+        $isWaiting = true;
+        break;
+        }
+        $isWaiting = false;
+        }
+        @endphp
+        @if ($attendance->modifications()->exists() && $isWaiting)
+        <p class="form__waiting-message">*承認待ちのため修正はできません。</p>
+        @else
         <button class="form__button" type="submit">修正</button>
+        @endif
     </form>
 </div>
 @endsection

@@ -93,6 +93,14 @@
     font-weight: 700;
 }
 
+.form__waiting-message {
+    margin: 20px 0 0;
+    color: #FF000080;
+    font-size: 1.8rem;
+    font-weight: 700;
+    text-align: right;
+}
+
 @media screen and (max-width: 860px) {
     .form__date-group, .form__time-group, .form__textarea {
          width: 80%;

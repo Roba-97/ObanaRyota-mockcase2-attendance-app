@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Attendance;
-use App\Models\Modification;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -48,6 +47,8 @@ class AttendanceController extends Controller
 
     public function showDetail(Attendance $attendance)
     {
+        $attendance->load('modifications');
+
         return view('attendance_detail', compact('attendance'));
     }
 
