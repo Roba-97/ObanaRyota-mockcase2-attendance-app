@@ -30,7 +30,7 @@ class ModificationRequest extends FormRequest
             'modified_break_in' => 'required|array',
             'modified_break_out' => 'required|array',
             'modified_break_in.*' => 'date_format:H:i|after:modified_punch_in|before:modified_punch_out',
-            'modified_break_out.*' => 'after:modified_punch_in|before:modified_punch_out',
+            'modified_break_out.*' => 'date_format:H:i|after:modified_punch_in|before:modified_punch_out',
             'additional_break_in' => 'nullable|date_format:H:i|after:modified_punch_in|before:modified_punch_out',
             'additional_break_out' => 'nullable|date_format:H:i|before:modified_punch_out|after:modified_punch_in',
             'comment' => 'required|max:50',

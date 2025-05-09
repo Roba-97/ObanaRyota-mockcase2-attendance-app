@@ -40,10 +40,10 @@
                 <td class="form__table-cel">
                     <div class="form__time-group">
                         <input class="form__input" name="modified_punch_in" type="time"
-                            value="{{ old('modified_punch_in', \Carbon\Carbon::parse($attendance->punch_in)->format('H:i')) }}">
+                            value="{{ old('modified_punch_in', \Carbon\Carbon::parse($attendance->punch_in)->format('H:i')) }}" {{ $isWaiting? 'readonly' : '' }}>
                         <span class="form__table-text form__table-text--time-separator">~</span>
                         <input class="form__input" name="modified_punch_out" type="time"
-                            value="{{ old('modified_punch_out', \Carbon\Carbon::parse($attendance->punch_out)->format('H:i')) }}">
+                            value="{{ old('modified_punch_out', \Carbon\Carbon::parse($attendance->punch_out)->format('H:i')) }}" {{ $isWaiting? 'readonly' : '' }}>
                     </div>
                     @if ($errors->has('modified_punch_in') || $errors->has('modified_punch_out'))
                     <p class="form__error-message">
@@ -58,14 +58,14 @@
                 <td class="form__table-cel">
                     <div class="form__time-group">
                         <input class="form__input" name="modified_break_in[]" type="time"
-                            value="{{ old("modified_break_in.$index", \Carbon\Carbon::parse($break->start_at)->format('H:i')) }}">
+                            value="{{ old("modified_break_in.$index", \Carbon\Carbon::parse($break->start_at)->format('H:i')) }}" {{ $isWaiting? 'readonly' : '' }}>
                         <span class="form__table-text form__table-text--time-separator">~</span>
                         <input class="form__input" name="modified_break_out[]" type="time"
-                            value="{{ old("modified_break_out.$index", \Carbon\Carbon::parse($break->end_at)->format('H:i')) }}">
+                            value="{{ old("modified_break_out.$index", \Carbon\Carbon::parse($break->end_at)->format('H:i')) }}" {{ $isWaiting? 'readonly' : '' }}>
                     </div>
-                    @if ($errors->has("modified_break_in.$index") || $errors->has('modified_break_out'))
+                    @if ($errors->has("modified_break_in.$index") || $errors->has("modified_break_out.$index"))
                     <p class="form__error-message">
-                        {{ $errors->has("modified_break_in.$index") ? $errors->first("modified_break_in.$index") : $errors->first('modified_break_out') }}
+                        {{ $errors->has("modified_break_in.$index") ? $errors->first("modified_break_in.$index") : $errors->first("modified_break_out.$index") }}
                     </p>
                     @endif
                 </td>
@@ -77,10 +77,10 @@
                 <td class="form__table-cel">
                     <div class="form__time-group">
                         <input class="form__input" name="additional_break_in" type="time"
-                            value="{{ old('additional_break_in') }}">
+                            value="{{ old('additional_break_in') }}" {{ $isWaiting? 'readonly' : '' }}>
                         <span class="form__table-text form__table-text--time-separator">~</span>
                         <input class="form__input" name="additional_break_out" type="time"
-                            value="{{ old('additional_break_out') }}">
+                            value="{{ old('additional_break_out') }}" {{ $isWaiting? 'readonly' : '' }}>
                     </div>
                     @if ($errors->has('additional_break_in') || $errors->has('additional_break_out'))
                     <p class="form__error-message">
@@ -92,24 +92,14 @@
             <tr class="form__table-row">
                 <th class="form__table-header">備考</th>
                 <td class="form__table-cel">
-                    <textarea class="form__textarea" name="comment" rows="3" placeholder="電車遅延のため">{{ old('comment') }}</textarea>
+                    <textarea class="form__textarea" name="comment" rows="3" {{ $isWaiting? 'readonly' : '' }}>{{ old('comment') }}</textarea>
                     @error('comment')
                     <p class="form__error-message">{{ $message }}</p>
                     @enderror
                 </td>
             </tr>
         </table>
-        @php
-        $modifications = $attendance->modifications;
-        foreach ($modifications as $modification) {
-        if (!$modification->is_approved) {
-        $isWaiting = true;
-        break;
-        }
-        $isWaiting = false;
-        }
-        @endphp
-        @if ($attendance->modifications()->exists() && $isWaiting)
+        @if ($isWaiting)
         <p class="form__waiting-message">*承認待ちのため修正はできません。</p>
         @else
         <button class="form__button" type="submit">修正</button>

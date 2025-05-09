@@ -58,9 +58,11 @@
     outline: none;
     width: 120px;
 }
-
 .form__input[type="time"]::-webkit-calendar-picker-indicator {
     display: none;
+}
+.form__input[readonly] {
+    border: none;
 }
 
 .form__textarea {
@@ -72,6 +74,9 @@
     outline: none;
     resize: none;
     width: 60%;
+}
+.form__textarea[readonly] {
+    border: none;
 }
 
 .form__button {

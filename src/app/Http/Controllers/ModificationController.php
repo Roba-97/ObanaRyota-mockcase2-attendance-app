@@ -31,7 +31,7 @@ class ModificationController extends Controller
 
         if ($request->filled('additional_break_in') && $request->filled('additional_break_out')) {
             BreakModification::create([
-                'attendance_id' => $attendance->id,
+                'modification_id' => $modification->id,
                 'break_id' => null,
                 'modified_start_at' => $request->input('additional_break_in'),
                 'modified_end_at' => $request->input('additional_break_out'),

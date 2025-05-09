@@ -49,7 +49,19 @@ class AttendanceController extends Controller
     {
         $attendance->load('modifications');
 
-        return view('attendance_detail', compact('attendance'));
+        if($attendance->modifications()->exists()) {
+            foreach ($attendance->modifications as $modification) {
+                if (!$modification->is_approved) {
+                    $isWaiting = true;
+                    break;
+                }
+                $isWaiting = false;
+            }
+        } else {
+            $isWaiting = false;
+        }
+
+        return view('attendance_detail', compact('isWaiting', 'attendance'));
     }
 
     public function showModificationList(Request $request)

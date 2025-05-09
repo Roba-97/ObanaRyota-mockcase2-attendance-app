@@ -23,6 +23,7 @@
     border: none;
     border-radius: 10px;
     width: 100%;
+    table-layout: fixed;
 }
 
 .modification-list__table-row {
