@@ -4,7 +4,6 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\StampController;
 use App\Http\Controllers\ModificationController;
-use App\Models\Attendance;
 
 /*
 |--------------------------------------------------------------------------

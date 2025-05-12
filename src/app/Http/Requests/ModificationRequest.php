@@ -64,23 +64,32 @@ class ModificationRequest extends FormRequest
     public function withValidator(Validator $validator)
     {
         $validator->after(function ($validator) {
-            $ins = $this->modified_break_in;
-            $outs = $this->modified_break_out;
-
-            foreach ($ins as $index => $in) {
-                if ($in >= $outs[$index]) {
-                    $validator->errors()->add("modified_break_in.$index", '休憩入時刻は休憩戻時刻より前である必要があります');
-                }
-            }
-
+            $modIns = $this->modified_break_in;
+            $modOuts = $this->modified_break_out;
             $addIn = $this->additional_break_in;
             $addOut = $this->additional_break_out;
+
             if ($addIn xor $addOut) {
                 $validator->errors()->add('additional_break_in', '休憩入と休憩戻の時刻をペアで入力してください');
             }
+
             if ($addIn && $addOut) {
                 if ($addIn >= $addOut) {
                     $validator->errors()->add('additional_break_in', '休憩入時刻は休憩戻時刻より前である必要があります');
+                }
+            }
+
+            foreach ($modIns as $index => $in) {
+                if ($in >= $modOuts[$index]) {
+                    $validator->errors()->add("modified_break_in.$index", '休憩入時刻は休憩戻時刻より前である必要があります');
+                }
+
+                if (
+                    $in <= $addIn && $addIn <= $modOuts[$index]
+                    or $in <= $addOut && $addOut <= $modOuts[$index]
+                    or $addIn <= $in  && $modOuts[$index] <= $addOut
+                ) {
+                    $validator->errors()->add('additional_break_in', '休憩時刻に重複があります');
                 }
             }
         });

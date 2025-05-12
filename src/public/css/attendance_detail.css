@@ -110,7 +110,7 @@
     .form__date-group, .form__time-group, .form__textarea {
          width: 80%;
     }
-    .form__input {
+    .form__table-text, .form__input {
         width: 100px;
     }
 }

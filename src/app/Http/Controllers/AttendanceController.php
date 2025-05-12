@@ -50,12 +50,12 @@ class AttendanceController extends Controller
         $attendance->load('modifications');
         $isWaiting = false;
 
-        if($attendance->modifications()->exists()) {
+        if ($attendance->modifications()->exists()) {
             foreach ($attendance->modifications as $modification) {
                 if (!$modification->is_approved) {
                     $isWaiting = true;
                     break;
-                }  
+                }
             }
         }
 

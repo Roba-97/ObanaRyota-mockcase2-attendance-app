@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use Carbon\Carbon;
 use App\Http\Requests\ModificationRequest;
+use App\Models\AdditionalBreak;
 use App\Models\Attendance;
-use App\Models\Modification;
 use App\Models\BreakModification;
+use App\Models\Modification;
+use Carbon\Carbon;
 
 class ModificationController extends Controller
 {
@@ -30,11 +31,10 @@ class ModificationController extends Controller
         }
 
         if ($request->filled('additional_break_in') && $request->filled('additional_break_out')) {
-            BreakModification::create([
+            AdditionalBreak::create([
                 'modification_id' => $modification->id,
-                'break_id' => null,
-                'modified_start_at' => $request->input('additional_break_in'),
-                'modified_end_at' => $request->input('additional_break_out'),
+                'added_start_at' => $request->input('additional_break_in'),
+                'added_end_at' => $request->input('additional_break_out'),
             ]);
         }
 
