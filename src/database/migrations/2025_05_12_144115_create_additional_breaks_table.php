@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateBreakModificationsTable extends Migration
+class CreateAdditionalBreaksTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,11 @@ class CreateBreakModificationsTable extends Migration
      */
     public function up()
     {
-        Schema::create('break_modifications', function (Blueprint $table) {
+        Schema::create('additional_breaks', function (Blueprint $table) {
             $table->id();
             $table->foreignId('modification_id')->constrained();
-            $table->foreignId('break_id')->constrained();
-            $table->time('modified_start_at');
-            $table->time('modified_end_at');
+            $table->time('added_start_at');
+            $table->time('added_end_at');
             $table->timestamps();
         });
     }
@@ -30,6 +29,6 @@ class CreateBreakModificationsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('break_modifications');
+        Schema::dropIfExists('additional_breaks');
     }
 }
