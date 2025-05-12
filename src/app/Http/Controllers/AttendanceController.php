@@ -25,7 +25,7 @@ class AttendanceController extends Controller
         $sessionKey = 'displayedMonth';
 
         if ($monthInput === null) {
-            session()->forget('displayMonth');
+            session()->forget($sessionKey);
             session()->put($sessionKey, Carbon::today());
         } else {
             if ($monthInput === 'next') {
@@ -45,21 +45,29 @@ class AttendanceController extends Controller
         return view('attendance_list', compact('displayedMonth', 'attendances'));
     }
 
-    public function showDetail(Attendance $attendance)
+    public function showDetail(Attendance $attendance, Request $request)
     {
-        $attendance->load('modifications');
+        $from = $request->query('from');
+        $isFromModification = false;
         $isWaiting = false;
+        $modification = null;
+        
+        $attendance->load('modifications');
 
         if ($attendance->modifications()->exists()) {
-            foreach ($attendance->modifications as $modification) {
-                if (!$modification->is_approved) {
+            foreach ($attendance->modifications as $mod) {
+                if (!$mod->is_approved) {
                     $isWaiting = true;
+                    if ($from === 'modification') {
+                        $modification = $mod->load('breakModifications', 'additionalBreak');
+                        $isFromModification = true;
+                    }
                     break;
                 }
             }
         }
 
-        return view('attendance_detail', compact('isWaiting', 'attendance'));
+        return view('attendance_detail', compact('isWaiting', 'isFromModification', 'attendance', 'modification'));
     }
 
     public function showModificationList(Request $request)

@@ -38,6 +38,6 @@ class ModificationController extends Controller
             ]);
         }
 
-        return redirect('/attendance/' . $attendance->id);
+        return redirect("/attendance/$attendance->id?from=modification");
     }
 }
