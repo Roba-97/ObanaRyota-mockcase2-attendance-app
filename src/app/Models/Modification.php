@@ -28,4 +28,9 @@ class Modification extends Model
     {
         return $this->hasMany(BreakModification::class);
     }
+
+    public function additionalBreak()
+    {
+        return $this->hasOne(AdditionalBreak::class);
+    }
 }

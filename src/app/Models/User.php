@@ -47,11 +47,17 @@ class User extends Authenticatable
         return $this->hasMany(Attendance::class);
     }
 
+    public function modifications()
+    {
+        return $this->hasManyThrough(Modification::class, Attendance::class);
+    }
+
     public function attendancesByMonth($year, $month)
     {
         return $this->attendances()
             ->whereYear('date', $year)
             ->whereMonth('date', $month)
+            ->orderBy('date')
             ->get();
     }
 

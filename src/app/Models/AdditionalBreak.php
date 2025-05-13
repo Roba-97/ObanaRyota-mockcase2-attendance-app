@@ -5,24 +5,18 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class BreakModification extends Model
+class AdditionalBreak extends Model
 {
     use HasFactory;
 
     protected $fillable = [
         'modification_id',
-        'break_id',
-        'modified_start_at',
-        'modified_end_at',
+        'added_start_at',
+        'added_end_at',
     ];
 
     public function modification()
     {
         return $this->belongsTo(Modification::class);
-    }
-
-    public function break()
-    {
-        return $this->belongsTo(BreakTime::class);
     }
 }
