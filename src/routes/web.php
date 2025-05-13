@@ -19,21 +19,28 @@ use App\Http\Controllers\Admin\LoginController;
 */
 
 Route::group(['middleware' => ['auth']], function () {
-    Route::get('/attendance', [AttendanceController::class, 'index']);
-    Route::post('/attendance/punch_in', [StampController::class, 'createStamp']);
-    Route::patch('/attendance/punch_out', [StampController::class, 'updateStamp']);
-    Route::post('/attendance/break_in', [StampController::class, 'createBreak']);
-    Route::patch('/attendance/break_out', [StampController::class, 'updateBreak']);
-    Route::get('/attendance/list', [AttendanceController::class, 'showList']);
-    Route::get('/attendance/{attendance}', [AttendanceController::class, 'showDetail']);
+    Route::prefix('attendance')->group(function() {
+        Route::get('/', [AttendanceController::class, 'index']);
+        Route::post('/punch_in', [StampController::class, 'createStamp']);
+        Route::patch('/punch_out', [StampController::class, 'updateStamp']);
+        Route::post('/break_in', [StampController::class, 'createBreak']);
+        Route::patch('/break_out', [StampController::class, 'updateBreak']);
+        Route::get('/list', [AttendanceController::class, 'showList']);
+        Route::get('/{attendance}', [AttendanceController::class, 'showDetail']);
+    });
     Route::post('/stamp_correction_request/{attendance}', [ModificationController::class, 'requestModification']);
     Route::get('/stamp_correction_request/list', [AttendanceController::class, 'showModificationList']);
 });
 
-Route::get('/admin/login', [LoginController::class, 'index'])->name('admin.login');
-Route::post('/admin/login', [LoginController::class, 'adminLogin']);
-Route::get('/admin/logout', [LoginController::class, 'adminLogout']);
+Route::prefix('admin')->group(function() {
+    Route::get('/login', [LoginController::class, 'index'])->name('admin.login');
+    Route::post('/login', [LoginController::class, 'adminLogin']);
+    Route::get('/logout', [LoginController::class, 'adminLogout']);
 
-Route::group(['middleware' => ['auth:admin']], function () {
-    Route::get('/admin/attendance/list', [AdminController::class, 'index']);
+    Route::group(['middleware' => ['auth:admin']], function () {
+        Route::get('/attendance/list', [AdminController::class, 'index']);
+    });
 });
+
+
+

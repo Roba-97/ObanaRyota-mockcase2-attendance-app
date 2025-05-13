@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class Admin extends Authenticatable
@@ -35,4 +36,10 @@ class Admin extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function getAttendancesByDate($date)
+    {
+        $targetDate = Carbon::parse($date)->format('Y-m-d');
+        return Attendance::whereDate('date', $targetDate)->with('breaks', 'user')->get();
+    }
 }
