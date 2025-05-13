@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\StampController;
 use App\Http\Controllers\ModificationController;
+use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\LoginController;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,4 +28,12 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/attendance/{attendance}', [AttendanceController::class, 'showDetail']);
     Route::post('/stamp_correction_request/{attendance}', [ModificationController::class, 'requestModification']);
     Route::get('/stamp_correction_request/list', [AttendanceController::class, 'showModificationList']);
+});
+
+Route::get('/admin/login', [LoginController::class, 'index'])->name('admin.login');
+Route::post('/admin/login', [LoginController::class, 'adminLogin']);
+Route::get('/admin/logout', [LoginController::class, 'adminLogout']);
+
+Route::group(['middleware' => ['auth:admin']], function () {
+    Route::get('/admin/attendance/list', [AdminController::class, 'index']);
 });
