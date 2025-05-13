@@ -38,4 +38,30 @@ class AdminController extends Controller
         $staff = User::all();
         return view('admin.admin_staff_list', compact('staff'));
     }
+
+    public function showStaffMonthlyAttendance(User $user, Request $request)
+    {
+        $monthInput = $request->input('month');
+        $sessionKey = 'displayedMonth';
+
+        if ($monthInput === null) {
+            session()->forget($sessionKey);
+            session()->put($sessionKey, Carbon::today());
+        } else {
+            if ($monthInput === 'next') {
+                session()->put($sessionKey, session()->get($sessionKey)->addMonth(1));
+            }
+            if ($monthInput === 'previous') {
+                session()->put($sessionKey, session()->get($sessionKey)->subMonth(1));
+            }
+        }
+
+        $displayedMonth = session()->get($sessionKey)->format('Y/m');
+
+        $year = session()->get($sessionKey)->year;
+        $month = session()->get($sessionKey)->month;
+        $attendances = $user->attendancesByMonth($year, $month);
+
+        return view('admin.admin_staff_attendance', compact('displayedMonth', 'attendances', 'user'));
+    }
 }

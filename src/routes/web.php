@@ -36,10 +36,10 @@ Route::prefix('admin')->group(function() {
     Route::get('/login', [LoginController::class, 'index'])->name('admin.login');
     Route::post('/login', [LoginController::class, 'adminLogin']);
     Route::get('/logout', [LoginController::class, 'adminLogout']);
-
     Route::group(['middleware' => ['auth:admin']], function () {
         Route::get('/attendance/list', [AdminController::class, 'index']);
         Route::get('/staff/list', [AdminController::class, 'showStaffList']);
+        Route::get('/attendance/staff/{user}', [AdminController::class, 'showStaffMonthlyAttendance']);
     });
 });
 
