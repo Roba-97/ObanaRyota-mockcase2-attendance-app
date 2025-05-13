@@ -39,6 +39,7 @@ Route::prefix('admin')->group(function() {
 
     Route::group(['middleware' => ['auth:admin']], function () {
         Route::get('/attendance/list', [AdminController::class, 'index']);
+        Route::get('/staff/list', [AdminController::class, 'showStaffList']);
     });
 });
 
