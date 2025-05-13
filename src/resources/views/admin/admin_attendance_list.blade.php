@@ -51,9 +51,9 @@ $date = \Carbon\Carbon::parse($displayedDate);
         <tr class="attendance-list__table-row">
             <td class="attendance-list__table-text">{{ $attendance->user->name }}</td>
             <td class="attendance-list__table-text">{{ \Carbon\Carbon::parse($attendance->punch_in)->format('H:i'); }}</td>
-            <td class="attendance-list__table-text">{{ \Carbon\Carbon::parse($attendance->punch_out)->format('H:i'); }}</td>
+            <td class="attendance-list__table-text">{{ $attendance->status === 3 ? \Carbon\Carbon::parse($attendance->punch_out)->format('H:i') : ''; }}</td>
             <td class="attendance-list__table-text">{{ $attendance->break_duration }}</td>
-            <td class="attendance-list__table-text">{{ $attendance->work_duration }}</td>
+            <td class="attendance-list__table-text">{{ $attendance->status === 3 ? $attendance->work_duration : ''}}</td>
             <td class="attendance-list__table-text attendance-list__table-text--bold"><a href="/attendance/{{ $attendance->id }}">詳細</a></td>
         </tr>
         @endforeach
