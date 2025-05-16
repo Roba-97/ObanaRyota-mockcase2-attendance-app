@@ -9,6 +9,16 @@ use Illuminate\Support\Facades\Auth;
 
 class StampController extends Controller
 {
+    public function index()
+    {
+        if (!Auth::user()->findTodayAttendance()) {
+            return view('attendance_register', ['status' => 0]);
+        } else {
+            $status = Auth::user()->findTodayAttendance()->status;
+            return view('attendance_register', ['status' => $status]);
+        }
+    }
+    
     public function createStamp()
     {
         $punchIn = Carbon::now();

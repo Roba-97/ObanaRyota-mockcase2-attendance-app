@@ -42,4 +42,9 @@ class Admin extends Authenticatable
         $targetDate = Carbon::parse($date)->format('Y-m-d');
         return Attendance::whereDate('date', $targetDate)->with('breaks', 'user')->get();
     }
+
+    public function getAllModifications($approved)
+    {
+        return Modification::where('is_approved', $approved)->with('attendance')->get();
+    }
 }

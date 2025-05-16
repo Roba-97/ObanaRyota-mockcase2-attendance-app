@@ -20,7 +20,7 @@ use App\Http\Controllers\Admin\LoginController;
 
 Route::group(['middleware' => ['auth']], function () {
     Route::prefix('attendance')->group(function() {
-        Route::get('/', [AttendanceController::class, 'index']);
+        Route::get('/', [StampController::class, 'index']);
         Route::post('/punch_in', [StampController::class, 'createStamp']);
         Route::patch('/punch_out', [StampController::class, 'updateStamp']);
         Route::post('/break_in', [StampController::class, 'createBreak']);
@@ -35,7 +35,7 @@ Route::prefix('admin')->group(function() {
     Route::post('/login', [LoginController::class, 'adminLogin']);
     Route::get('/logout', [LoginController::class, 'adminLogout']);
     Route::group(['middleware' => ['auth:admin']], function () {
-        Route::get('/attendance/list', [AdminController::class, 'index']);
+        Route::get('/attendance/list', [AdminController::class, 'index'])->name('admin.index');
         Route::get('/staff/list', [AdminController::class, 'showStaffList']);
         Route::get('/attendance/staff/{user}', [AdminController::class, 'showStaffMonthlyAttendance']);
     });
@@ -43,7 +43,7 @@ Route::prefix('admin')->group(function() {
 
 Route::group(['middleware' => ['auth.any']], function () {
     Route::get('/attendance/{attendance}', [AttendanceController::class, 'showDetail']);
-    Route::get('/stamp_correction_request/list', [AttendanceController::class, 'showModificationList']);
+    Route::get('/stamp_correction_request/list', [ModificationController::class, 'showModificationList']);
 });
 
 

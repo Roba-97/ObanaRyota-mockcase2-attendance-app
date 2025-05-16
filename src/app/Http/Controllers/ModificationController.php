@@ -8,9 +8,24 @@ use App\Models\Attendance;
 use App\Models\BreakModification;
 use App\Models\Modification;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ModificationController extends Controller
 {
+    public function showModificationList(Request $request)
+    {
+        $showApproved = $request->input('status') === 'approved' ? true : false;
+
+        if (Auth::guard('admin')->check()) {
+            $modifications = Auth::guard('admin')->user()->getAllModifications($showApproved);
+        } else {
+            $modifications = Auth::user()->modifications()->where('is_approved', $showApproved)->with('attendance')->get();
+        }
+
+        return view('modification_list', compact('showApproved', 'modifications'));
+    }
+
     public function requestModification(Attendance $attendance, ModificationRequest $request)
     {
         $modification = Modification::create([

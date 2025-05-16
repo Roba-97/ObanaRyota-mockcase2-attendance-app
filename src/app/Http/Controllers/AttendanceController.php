@@ -9,16 +9,6 @@ use Illuminate\Support\Facades\Auth;
 
 class AttendanceController extends Controller
 {
-    public function index()
-    {
-        if (!Auth::user()->findTodayAttendance()) {
-            return view('attendance_register', ['status' => 0]);
-        } else {
-            $status = Auth::user()->findTodayAttendance()->status;
-            return view('attendance_register', ['status' => $status]);
-        }
-    }
-
     public function showList(Request $request)
     {
         $monthInput = $request->input('month');
@@ -68,20 +58,5 @@ class AttendanceController extends Controller
         }
 
         return view('attendance_detail', compact('isWaiting', 'isFromModification', 'attendance', 'modification'));
-    }
-
-    public function showModificationList(Request $request)
-    {
-        $status = $request->input('status');
-
-        if ($status === 'approved') {
-            $showApproved = true;
-            $modifications = Auth::user()->modifications()->where('is_approved', true)->with('attendance')->get();
-        } else {
-            $showApproved = false;
-            $modifications = Auth::user()->modifications()->where('is_approved', false)->with('attendance')->get();
-        }
-
-        return view('modification_list', compact('showApproved', 'modifications'));
     }
 }
