@@ -26,10 +26,8 @@ Route::group(['middleware' => ['auth']], function () {
         Route::post('/break_in', [StampController::class, 'createBreak']);
         Route::patch('/break_out', [StampController::class, 'updateBreak']);
         Route::get('/list', [AttendanceController::class, 'showList']);
-        Route::get('/{attendance}', [AttendanceController::class, 'showDetail']);
     });
     Route::post('/stamp_correction_request/{attendance}', [ModificationController::class, 'requestModification']);
-    Route::get('/stamp_correction_request/list', [AttendanceController::class, 'showModificationList']);
 });
 
 Route::prefix('admin')->group(function() {
@@ -41,6 +39,11 @@ Route::prefix('admin')->group(function() {
         Route::get('/staff/list', [AdminController::class, 'showStaffList']);
         Route::get('/attendance/staff/{user}', [AdminController::class, 'showStaffMonthlyAttendance']);
     });
+});
+
+Route::group(['middleware' => ['auth.any']], function () {
+    Route::get('/attendance/{attendance}', [AttendanceController::class, 'showDetail']);
+    Route::get('/stamp_correction_request/list', [AttendanceController::class, 'showModificationList']);
 });
 
 
