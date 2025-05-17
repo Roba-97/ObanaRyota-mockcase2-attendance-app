@@ -66,6 +66,10 @@ class ModificationRequest extends FormRequest
         $validator->after(function ($validator) {
             $modIns = $this->modified_break_in;
             $modOuts = $this->modified_break_out;
+
+            $comparisonIn = $modIns[0];
+            $comparisonOut = $modOuts[0];
+
             $addIn = $this->additional_break_in;
             $addOut = $this->additional_break_out;
 
@@ -79,18 +83,21 @@ class ModificationRequest extends FormRequest
                 }
             }
 
-            foreach ($modIns as $index => $in) {
-                if ($in >= $modOuts[$index]) {
+            foreach ($modIns as $index => $modIn) {
+                if ($modIn >= $modOuts[$index]) {
                     $validator->errors()->add("modified_break_in.$index", '休憩入時刻は休憩戻時刻より前である必要があります');
                 }
 
-                if (
-                    $in <= $addIn && $addIn <= $modOuts[$index]
-                    or $in <= $addOut && $addOut <= $modOuts[$index]
-                    or $addIn <= $in  && $modOuts[$index] <= $addOut
-                ) {
+                if ($addIn < $modOuts[$index] && $addOut > $modIn) {
                     $validator->errors()->add('additional_break_in', '休憩時刻に重複があります');
                 }
+
+                if($index > 0) {
+                    if ($modIn < $comparisonOut && $modOuts[$index] > $comparisonIn) {
+                        $validator->errors()->add("modified_break_in.$index", '休憩時刻に重複があります');
+                    }
+                }
+
             }
         });
     }
