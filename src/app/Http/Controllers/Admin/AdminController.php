@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Modification;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -63,5 +64,11 @@ class AdminController extends Controller
         $attendances = $user->attendancesByMonth($year, $month);
 
         return view('admin.admin_staff_attendance', compact('displayedMonth', 'attendances', 'user'));
+    }
+
+    public function showModificationRequest(Modification $modification)
+    {
+        $modification->load('attendance', 'breakModifications', 'additionalBreak');
+        return view('admin.admin_modification_request', compact('modification'));
     }
 }
