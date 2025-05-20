@@ -37,20 +37,22 @@ class AttendanceController extends Controller
 
     public function showDetail(Attendance $attendance, Request $request)
     {
-        $from = $request->query('from');
-        $isFromModification = false;
+        if (Auth::guard('admin')->check()) {
+            $attendance->load('breaks');
+            return view('admin.admin_attendance_detail', compact('attendance'));
+        }
+
+        $isFromModification = $request->query('from') === 'modification' ? true : false;
         $isWaiting = false;
         $modification = null;
-        
-        $attendance->load('modifications');
-
+    
         if ($attendance->modifications()->exists()) {
+            $attendance->load('modifications');
             foreach ($attendance->modifications as $mod) {
                 if (!$mod->is_approved) {
                     $isWaiting = true;
-                    if ($from === 'modification') {
+                    if ($isFromModification) {
                         $modification = $mod->load('breakModifications', 'additionalBreak');
-                        $isFromModification = true;
                     }
                     break;
                 }
