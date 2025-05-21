@@ -24,6 +24,7 @@ Route::group(['middleware' => ['auth:admin']], function () {
         Route::get('/attendance/list', [AdminController::class, 'index'])->name('admin.index');
         Route::get('/staff/list', [AdminController::class, 'showStaffList']);
         Route::get('/attendance/staff/{user}', [AdminController::class, 'showStaffMonthlyAttendance']);
+        Route::get('/attendance/staff/{user}/export', [AdminController::class, 'csvExport']);
     });
     Route::get('/stamp_correction_request/approve/{modification}', [AdminController::class, 'showModificationRequest']);
     Route::post('/stamp_correction_request/approve/{modification}', [ModificationController::class, 'approveModificationRequest']);

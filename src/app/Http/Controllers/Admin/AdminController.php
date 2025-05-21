@@ -71,4 +71,44 @@ class AdminController extends Controller
         $modification->load('attendance', 'breakModifications', 'additionalBreak');
         return view('admin.admin_modification_request', compact('modification'));
     }
+
+    public function csvExport(User $user)
+    {
+        $sessionKey = 'displayedMonth';
+        $weekDays = ['日', '月', '火', '水', '木', '金', '土'];
+
+        $csvHeader = ['日付', '出勤', '退勤' , '休憩', '合計'];
+        $exportData = [];
+        array_push($exportData, $csvHeader);
+
+        $year = session()->get($sessionKey)->year;
+        $month = session()->get($sessionKey)->month;
+        $attendances = $user->attendancesByMonth($year, $month);
+
+        foreach($attendances as $attendance) {
+            $date = Carbon::parse($attendance->date);
+            $row = [
+                $date->format('m/d') . '(' . $weekDays[$date->dayOfWeek] . ')',
+                Carbon::parse($attendance->punch_in)->format('H:i'),
+                Carbon::parse($attendance->punch_out)->format('H:i'),
+                $attendance->break_duration,
+                $attendance->work_duration
+            ];
+            array_push($exportData, $row);
+        }
+
+        $stream = fopen('php://temp', 'r+b');
+        foreach ($exportData as $row) {
+            fputcsv($stream, $row);
+        }
+        rewind($stream);
+        $csv = mb_convert_encoding(stream_get_contents($stream), 'SJIS-win', 'UTF-8');
+        fclose($stream);
+
+        $filename = $user->name . '_' . $year . '年' . $month . '月_勤怠一覧.csv';
+
+        return response($csv, 200)
+            ->header('Content-Type', 'text/csv')
+            ->header('Content-Disposition', 'attachment; filename="' . $filename . '"');
+    }
 }

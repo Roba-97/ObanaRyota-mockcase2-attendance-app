@@ -45,7 +45,7 @@ class AttendanceController extends Controller
         $isFromModification = $request->query('from') === 'modification' ? true : false;
         $isWaiting = false;
         $modification = null;
-    
+        
         if ($attendance->modifications()->exists()) {
             $attendance->load('modifications');
             foreach ($attendance->modifications as $mod) {

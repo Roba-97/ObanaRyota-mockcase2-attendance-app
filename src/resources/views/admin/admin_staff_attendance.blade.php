@@ -59,6 +59,6 @@
         </tr>
         @endforeach
     </table>
-    <a class="staff-attendance__button" href="">CSV出力</a>
+    <a class="staff-attendance__button" href="/admin/attendance/staff/{{ $user->id }}/export">CSV出力</a>
 </div>
 @endsection
