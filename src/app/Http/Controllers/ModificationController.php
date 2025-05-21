@@ -6,6 +6,7 @@ use App\Http\Requests\ModificationRequest;
 use App\Models\AdditionalBreak;
 use App\Models\Attendance;
 use App\Models\BreakModification;
+use App\Models\BreakTime;
 use App\Models\Modification;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -54,5 +55,31 @@ class ModificationController extends Controller
         }
 
         return redirect("/attendance/$attendance->id?from=modification");
+    }
+
+    public function modifyAttendance(Attendance $attendance, ModificationRequest $request)
+    {
+        $attendance->update([
+            'punch_in' => $request->input('modified_punch_in'),
+            'punch_out' => $request->input('modified_punch_out'),            
+        ]);
+
+        foreach ($attendance->breaks as $index => $break) {
+            $break->update([
+                'start_at' => $request->input("modified_break_in.$index"),
+                'end_at' => $request->input("modified_break_out.$index"),
+            ]);
+        }
+
+        if ($request->filled('additional_break_in') && $request->filled('additional_break_out')) {
+            BreakTime::create([
+                'attendance_id' => $attendance->id,
+                'start_at' => $request->input('additional_break_in'),
+                'end_at' => $request->input('additional_break_out'),
+                'is_ended' => true,
+            ]);
+        }
+
+        return redirect("/attendance/$attendance->id");
     }
 }
