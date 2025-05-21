@@ -57,6 +57,37 @@ class ModificationController extends Controller
         return redirect("/attendance/$attendance->id?from=modification");
     }
 
+    public function approveModificationRequest(Modification $modification)
+    {
+        $attendance = Attendance::find($modification->attendance_id);
+
+        $attendance->update([
+            'punch_in' => $modification->modified_punch_in,
+            'punch_out' => $modification->modified_punch_out,
+        ]);
+
+        foreach ($modification->breakModifications as $breakModification) {
+            $target = BreakTime::find($breakModification->break_id);
+            $target->update([
+                'start_at' => $breakModification->modified_start_at,
+                'end_at' => $breakModification->modified_end_at,
+            ]);
+        }
+
+        if($modification->additionalBreak()->exists()) {
+            BreakTime::create([
+                'attendance_id' => $attendance->id,
+                'start_at' => $modification->additionalBreak->added_start_at,
+                'end_at' => $modification->additionalBreak->added_end_at,
+                'is_ended' => true,
+            ]);
+        }
+
+        $modification->update(['is_approved' => true]);
+
+        return redirect("/stamp_correction_request/approve/$modification->id");
+    }
+
     public function modifyAttendance(Attendance $attendance, ModificationRequest $request)
     {
         $attendance->update([
