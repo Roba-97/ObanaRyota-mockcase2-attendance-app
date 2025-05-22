@@ -1,11 +1,11 @@
 @extends('layouts.app')
 
 @section('title')
-<title>勤怠詳細</title>
+<title>管理者画面-勤怠詳細</title>
 @endsection
 
 @section('css')
-<link rel="stylesheet" href="{{ asset('css/attendance_detail.css') }}">
+<link rel="stylesheet" href="{{ asset('css/admin/admin_attendance_detail.css') }}">
 @endsection
 
 @section('header')
@@ -13,14 +13,8 @@
 @endsection
 
 @php
-$punchIn = $isFromModification ? $modification->modified_punch_in : $attendance->punch_in;
-$punchOut = $isFromModification ? $modification->modified_punch_out : $attendance->punch_out;
-$breaks = $isFromModification ? $modification->breakModifications : $attendance->breaks;
-$start_at = $isFromModification ? 'modified_start_at' : 'start_at';
-$end_at = $isFromModification ? 'modified_end_at' : 'end_at';
-$additionalBreakIn = $isFromModification && $modification->additionalBreak !== null ? $modification->additionalBreak->added_start_at : '';
-$additionalBreakOut = $isFromModification && $modification->additionalBreak !== null ? $modification->additionalBreak->added_end_at : '';
-$comment = $isFromModification ? $modification->comment : '';
+$latestModification = $attendance->modifications()->latest()->first();
+$isWaiting = $latestModification && !$latestModification->is_approved;
 @endphp
 
 @section('content')
@@ -28,7 +22,7 @@ $comment = $isFromModification ? $modification->comment : '';
     <div class="content__about">
         <h2 class="content__about-text">勤怠詳細</h2>
     </div>
-    <form class="attendance-detail__form" action="/stamp_correction_request/{{ $attendance->id }}" method="post">
+    <form class="attendance-detail__form" action="/stamp_correction/{{ $attendance->id }}" method="post">
         @csrf
         <table class="form__table">
             <tr class="form__table-row">
@@ -51,10 +45,10 @@ $comment = $isFromModification ? $modification->comment : '';
                 <td class="form__table-cel">
                     <div class="form__time-group">
                         <input class="form__input" name="modified_punch_in" type="time"
-                            value="{{ old('modified_punch_in', \Carbon\Carbon::parse($punchIn)->format('H:i')) }}" {{ $isWaiting? 'readonly' : '' }}>
+                            value="{{ old('modified_punch_in', \Carbon\Carbon::parse($attendance->punch_in)->format('H:i')) }}" {{ $isWaiting? 'readonly' : '' }}>
                         <span class="form__table-text form__table-text--time-separator">~</span>
                         <input class="form__input" name="modified_punch_out" type="time"
-                            value="{{ old('modified_punch_out', \Carbon\Carbon::parse($punchOut)->format('H:i')) }}" {{ $isWaiting? 'readonly' : '' }}>
+                            value="{{ old('modified_punch_out', \Carbon\Carbon::parse($attendance->punch_out)->format('H:i')) }}" {{ $isWaiting? 'readonly' : '' }}>
                     </div>
                     @if ($errors->has('modified_punch_in') || $errors->has('modified_punch_out'))
                     <p class="form__error-message">
@@ -63,16 +57,16 @@ $comment = $isFromModification ? $modification->comment : '';
                     @endif
                 </td>
             </tr>
-            @foreach ($breaks as $index => $break)
+            @foreach ($attendance->breaks as $index => $break)
             <tr class="form__table-row">
                 <th class="form__table-header">休憩{{ $loop->first ? '' : $loop->iteration }}</th>
                 <td class="form__table-cel">
                     <div class="form__time-group">
                         <input class="form__input" name="modified_break_in[]" type="time"
-                            value="{{ old("modified_break_in.$index", \Carbon\Carbon::parse($break->$start_at)->format('H:i')) }}" {{ $isWaiting? 'readonly' : '' }}>
+                            value="{{ old("modified_break_in.$index", \Carbon\Carbon::parse($break->start_at)->format('H:i')) }}" {{ $isWaiting? 'readonly' : '' }}>
                         <span class="form__table-text form__table-text--time-separator">~</span>
                         <input class="form__input" name="modified_break_out[]" type="time"
-                            value="{{ old("modified_break_out.$index", \Carbon\Carbon::parse($break->$end_at)->format('H:i')) }}" {{ $isWaiting? 'readonly' : '' }}>
+                            value="{{ old("modified_break_out.$index", \Carbon\Carbon::parse($break->end_at)->format('H:i')) }}" {{ $isWaiting? 'readonly' : '' }}>
                     </div>
                     @if ($errors->has("modified_break_in.$index") || $errors->has("modified_break_out.$index"))
                     <p class="form__error-message">
@@ -84,14 +78,14 @@ $comment = $isFromModification ? $modification->comment : '';
             @endforeach
             <tr class="form__table-row">
                 <th class="form__table-header">
-                    休憩{{ $attendance->breaks->isNotEmpty() ? $breaks->count() + 1 : '' }}</th>
+                    休憩{{ $attendance->breaks->isNotEmpty() ? $attendance->breaks->count() + 1 : '' }}</th>
                 <td class="form__table-cel">
                     <div class="form__time-group">
                         <input class="form__input" name="additional_break_in" type="time"
-                            value="{{ old('additional_break_in', $additionalBreakIn) }}" {{ $isWaiting? 'readonly' : '' }}>
+                            value="{{ old('additional_break_in') }}" {{ $isWaiting? 'readonly' : '' }}>
                         <span class="form__table-text form__table-text--time-separator">~</span>
                         <input class="form__input" name="additional_break_out" type="time"
-                            value="{{ old('additional_break_out', $additionalBreakOut) }}" {{ $isWaiting? 'readonly' : '' }}>
+                            value="{{ old('additional_break_out') }}" {{ $isWaiting? 'readonly' : '' }}>
                     </div>
                     @if ($errors->has('additional_break_in') || $errors->has('additional_break_out'))
                     <p class="form__error-message">
@@ -103,17 +97,18 @@ $comment = $isFromModification ? $modification->comment : '';
             <tr class="form__table-row">
                 <th class="form__table-header">備考</th>
                 <td class="form__table-cel">
-                    <textarea class="form__textarea" name="comment" rows="3" {{ $isWaiting? 'readonly' : '' }}>{{ old('comment', $comment) }}</textarea>
+                    <textarea class="form__textarea" name="comment" rows="3" {{ $isWaiting? 'readonly' : '' }}>{{ old('comment') }}</textarea>
                     @error('comment')
                     <p class="form__error-message">{{ $message }}</p>
                     @enderror
                 </td>
             </tr>
         </table>
-        @if ($isWaiting && $isFromModification)
-        <p class="form__waiting-message">*承認待ちのため修正はできません。<br>*上記の修正内容を申請しています。</p>
-        @elseif ($isWaiting)
-        <p class="form__waiting-message">*承認待ちのため修正はできません。<br>*上記の内容は承認によって変更されます。</p>
+        @if ($isWaiting)
+        <p class="form__waiting-message">
+            *この勤怠には修正の申請があります。<br>
+            <a class="form__confirm-link" href="/stamp_correction_request/approve/{{ $latestModification->id }}">確認</a>
+        </p>
         @else
         <button class="form__button" type="submit">修正</button>
         @endif

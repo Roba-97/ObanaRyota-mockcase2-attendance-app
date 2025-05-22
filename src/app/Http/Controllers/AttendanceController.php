@@ -9,16 +9,6 @@ use Illuminate\Support\Facades\Auth;
 
 class AttendanceController extends Controller
 {
-    public function index()
-    {
-        if (!Auth::user()->findTodayAttendance()) {
-            return view('attendance_register', ['status' => 0]);
-        } else {
-            $status = Auth::user()->findTodayAttendance()->status;
-            return view('attendance_register', ['status' => $status]);
-        }
-    }
-
     public function showList(Request $request)
     {
         $monthInput = $request->input('month');
@@ -47,20 +37,22 @@ class AttendanceController extends Controller
 
     public function showDetail(Attendance $attendance, Request $request)
     {
-        $from = $request->query('from');
-        $isFromModification = false;
+        if (Auth::guard('admin')->check()) {
+            $attendance->load('breaks');
+            return view('admin.admin_attendance_detail', compact('attendance'));
+        }
+
+        $isFromModification = $request->query('from') === 'modification' ? true : false;
         $isWaiting = false;
         $modification = null;
         
-        $attendance->load('modifications');
-
         if ($attendance->modifications()->exists()) {
+            $attendance->load('modifications');
             foreach ($attendance->modifications as $mod) {
                 if (!$mod->is_approved) {
                     $isWaiting = true;
-                    if ($from === 'modification') {
+                    if ($isFromModification) {
                         $modification = $mod->load('breakModifications', 'additionalBreak');
-                        $isFromModification = true;
                     }
                     break;
                 }
@@ -68,20 +60,5 @@ class AttendanceController extends Controller
         }
 
         return view('attendance_detail', compact('isWaiting', 'isFromModification', 'attendance', 'modification'));
-    }
-
-    public function showModificationList(Request $request)
-    {
-        $status = $request->input('status');
-
-        if ($status === 'approved') {
-            $showApproved = true;
-            $modifications = Auth::user()->modifications()->where('is_approved', true)->with('attendance')->get();
-        } else {
-            $showApproved = false;
-            $modifications = Auth::user()->modifications()->where('is_approved', false)->with('attendance')->get();
-        }
-
-        return view('modification_list', compact('showApproved', 'modifications'));
     }
 }

@@ -1,4 +1,4 @@
-.attendance-detail__form {
+.modification-request__form {
     margin: 100px 0 0;
     width: 100%;
 }
@@ -43,40 +43,18 @@
     width: auto;
 }
 
+.form__table-sentence {
+    display: inline-block;
+    padding-left: 45px;
+    font-size: 1.4rem;
+    font-weight: 700;
+    width: 60%;
+}
+
 .form__date-group, .form__time-group {
     display: flex;
     justify-content: space-between;
     width: 60%;
-}
-
-.form__input {
-    padding: 5px;
-    border: solid 1px #D9D9D9;
-    border-radius: 4px;
-    font: inherit;
-    text-align: center;
-    outline: none;
-    width: 120px;
-}
-.form__input[type="time"]::-webkit-calendar-picker-indicator {
-    display: none;
-}
-.form__input[readonly] {
-    border: none;
-}
-
-.form__textarea {
-    padding: 10px 12px;
-    border: solid 1px #D9D9D9;
-    border-radius: 4px;
-    font-size: 1.4rem;
-    font-weight: 700;
-    outline: none;
-    resize: none;
-    width: 60%;
-}
-.form__textarea[readonly] {
-    border: none;
 }
 
 .form__button {
@@ -87,8 +65,15 @@
     border: none;
     border-radius: 5px;
     color: #FFFFFF;
+    cursor: pointer;
     font-size: 2.2rem;
     font-weight: 700;
+}
+.form__button--approved {
+    padding: 10px 25px;
+    background-color: #696969;
+    color: #FFFFFF;
+    cursor: unset;
 }
 
 .form__error-message {
@@ -112,5 +97,9 @@
     }
     .form__table-text, .form__input {
         width: 100px;
+    }
+    .form__table-sentence {
+        padding-left: 40px;
+        width: 80%;
     }
 }

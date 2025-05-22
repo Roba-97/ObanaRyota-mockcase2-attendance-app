@@ -91,6 +91,19 @@
     font-weight: 700;
 }
 
+.form__confirm-link {
+    display: inline-block;
+    margin: 20px 0 0;
+    padding: 10px 40px;
+    background-color: #000000;
+    border: none;
+    border-radius: 5px;
+    color: #FFFFFF;
+    font-size: 2.2rem;
+    font-weight: 700;
+    text-decoration: none;
+}
+
 .form__error-message {
     margin: 10px 0 0 0;
     color: #FF000080;

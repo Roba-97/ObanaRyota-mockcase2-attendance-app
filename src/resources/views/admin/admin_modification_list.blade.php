@@ -1,11 +1,11 @@
 @extends('layouts.app')
 
 @section('title')
-<title>申請一覧</title>
+<title>管理者画面-申請一覧</title>
 @endsection
 
 @section('css')
-<link rel="stylesheet" href="{{ asset('css/modification_list.css')}}">
+<link rel="stylesheet" href="{{ asset('css/admin/admin_modification_list.css')}}">
 @endsection
 
 @section('header')
@@ -42,10 +42,9 @@
             <td class="modification-list__table-cel">{{\Carbon\Carbon::parse($modification->attendance->date)->format('Y/m/d') }}</td>
             <td class="modification-list__table-cel">{{ $modification->comment }}</td>
             <td class="modification-list__table-cel">{{\Carbon\Carbon::parse($modification->application_date)->format('Y/m/d') }}</td>
-            <td class="modification-list__table-cel"><a href="/attendance/{{ $modification->attendance_id }}?from=modification">詳細</a></td>
+            <td class="modification-list__table-cel"><a href="/stamp_correction_request/approve/{{ $modification->id }}">詳細</a></td>
         </tr>
         @endforeach
     </table>
 </div>
-
 @endsection

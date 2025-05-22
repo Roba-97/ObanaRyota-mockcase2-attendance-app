@@ -21,8 +21,14 @@ class RedirectIfAuthenticated
     {
         $guards = empty($guards) ? [null] : $guards;
 
+        // ガード別ログイン後のリダイレクト処理
         foreach ($guards as $guard) {
             if (Auth::guard($guard)->check()) {
+
+                if ($guard === 'admin') {
+                    return redirect(RouteServiceProvider::ADMIN_HOME);
+                }
+
                 return redirect(RouteServiceProvider::HOME);
             }
         }

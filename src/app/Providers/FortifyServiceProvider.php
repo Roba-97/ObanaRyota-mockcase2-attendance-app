@@ -6,6 +6,7 @@ use App\Actions\Fortify\CreateNewUser;
 use App\Http\Requests\LoginRequest;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
@@ -36,10 +37,18 @@ class FortifyServiceProvider extends ServiceProvider
         Fortify::createUsersUsing(CreateNewUser::class);
 
         Fortify::registerView(function () {
+            if (Auth::guard('admin')->check()) {
+                return redirect()->route('admin.index');
+            }
+
             return view('auth.register');
         });
 
         Fortify::loginView(function () {
+            if (Auth::guard('admin')->check()) {
+                return redirect()->route('admin.index');
+            }
+            
             return view('auth.login');
         });
 

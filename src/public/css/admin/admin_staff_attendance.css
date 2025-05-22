@@ -1,4 +1,4 @@
-.attendance-list__month-nav {
+.staff-attendance__month-nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -10,16 +10,18 @@
     width: 100%;
 }
 
-.attendance-list__show-month {
+.staff-attendance__show-month {
     font-size: 2rem;
     font-weight: 700;
 }
 
-.attendance-list__last-month, .attendance-list__next-month {
+.staff-attendance__last-month,
+.staff-attendance__next-month {
     margin: 0 25px;
 }
 
-.attendance-list__last-month a, .attendance-list__next-month a {
+.staff-attendance__last-month a,
+.staff-attendance__next-month a {
     color: #737373;
     font-size: 1.6rem;
     font-weight: 700;
@@ -32,6 +34,7 @@
     width: 20px;
     height: 15px;
 }
+
 .month-nav__icon-arrow--rotate {
     margin: 0 0 0 10px;
     transform: rotate(180deg);
@@ -44,7 +47,7 @@
     aspect-ratio: 1;
 }
 
-.attedance-list__table {
+.staff-attendance__table {
     background-color: #FFFFFF;
     border: none;
     border-radius: 10px;
@@ -52,17 +55,19 @@
     table-layout: fixed;
 }
 
-.attendance-list__table-row {
+.staff-attendance__table-row {
     border-bottom: solid 2px #E1E1E1;
 }
-.attendance-list__table-row:first-of-type {
+
+.staff-attendance__table-row:first-of-type {
     border-bottom: solid 3px #E1E1E1;
 }
-.attendance-list__table-row:last-of-type {
+
+.staff-attendance__table-row:last-of-type {
     border-bottom: none;
 }
 
-.attendance-list__table-header {
+.staff-attendance__table-header {
     padding: 10px 0;
     color: #737373;
     font-size: 1.6rem;
@@ -70,14 +75,28 @@
     text-align: center;
 }
 
-.attendance-list__table-text {
+.staff-attendance__table-text {
     padding: 10px 0;
     color: #737373;
     font-size: 1.6rem;
     font-weight: 700;
     text-align: center;
 }
-.attendance-list__table-text:last-of-type a {
+
+.staff-attendance__table-text:last-of-type a {
     color: #000000;
+    text-decoration: none;
+}
+
+.staff-attendance__button {
+    display: block;
+    margin: 60px 0 0 auto;
+    padding: 10px 40px;
+    background-color: #000000;
+    border: none;
+    border-radius: 5px;
+    color: #FFFFFF;
+    font-size: 2.2rem;
+    font-weight: 700;
     text-decoration: none;
 }

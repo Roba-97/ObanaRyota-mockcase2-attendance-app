@@ -16,7 +16,7 @@
         <div class="header__logo"></div>
         @yield('header')
     </header>
-    @if( !in_array(Route::currentRouteName(), ['register', 'login', 'verification.notice']) )
+    @if( !in_array(Route::currentRouteName(), ['register', 'login', 'verification.notice', 'admin.login']) )
     <main class="content--after-login">
         @yield('content')
     </main>
