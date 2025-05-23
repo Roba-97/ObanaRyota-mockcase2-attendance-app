@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class AnyAuth
+class EnsureEmailIsVerifiedExceptAdmin
 {
     /**
      * Handle an incoming request.
@@ -17,12 +17,14 @@ class AnyAuth
      */
     public function handle(Request $request, Closure $next)
     {
-        if (Auth::guard('web')->check() || Auth::guard('admin')->check()) {
+        if (Auth::guard('admin')->check()) {
             return $next($request);
         }
 
-        if(!Auth::check()) {
-            return redirect('login');
+        if (Auth::guard('web')->check() && !Auth::guard('web')->user()->hasVerifiedEmail()) {
+            return redirect('/email/verify')->with('message', '登録していただいたメールアドレスに認証メールを送付しています。');
         }
+
+        return $next($request);
     }
 }

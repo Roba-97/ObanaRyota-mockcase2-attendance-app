@@ -33,7 +33,7 @@ Route::group(['middleware' => ['auth:admin']], function () {
     Route::post('/stamp_correction/{attendance}', [ModificationController::class, 'modifyAttendance']);
 });
 
-Route::group(['middleware' => ['auth.any']], function () {
+Route::group(['middleware' => ['auth.any','verified.custom']], function () {
     Route::get('/attendance/{attendance}', [AttendanceController::class, 'showDetail']);
     Route::get('/stamp_correction_request/list', [ModificationController::class, 'showModificationList']);
 });
