@@ -23,7 +23,6 @@ class AttendanceViewTest extends TestCase
 
     public function test_show_current_date_time_correctly()
     {
-        $this->withoutMiddleware([\Illuminate\Auth\Middleware\EnsureEmailIsVerified::class]);
         $user = $this->user;
         $now = Carbon::now();
 
