@@ -79,7 +79,7 @@ class UserRegistrationTest extends TestCase
 
         $response->assertValid();
 
-        $this->assertDatabaseHas(User::class, [
+        $this->assertDatabaseHas('users', [
             'name' => 'test',
             'email' => 'test@example.com',
         ]);
