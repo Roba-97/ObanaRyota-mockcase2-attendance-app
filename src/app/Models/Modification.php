@@ -19,6 +19,10 @@ class Modification extends Model
         'is_approved',
     ];
 
+    protected $casts = [
+        'is_approved' => 'boolean',
+    ];
+
     public function attendance()
     {
         return $this->belongsTo(Attendance::class);
