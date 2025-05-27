@@ -42,7 +42,13 @@
             <td class="modification-list__table-cel">{{\Carbon\Carbon::parse($modification->attendance->date)->format('Y/m/d') }}</td>
             <td class="modification-list__table-cel">{{ $modification->comment }}</td>
             <td class="modification-list__table-cel">{{\Carbon\Carbon::parse($modification->application_date)->format('Y/m/d') }}</td>
-            <td class="modification-list__table-cel"><a href="/attendance/{{ $modification->attendance_id }}?from=modification">詳細</a></td>
+            <td class="modification-list__table-cel">
+                @if($showApproved)
+                <a href="/attendance/{{ $modification->attendance_id }}">詳細</a>
+                @else
+                <a href="/attendance/{{ $modification->attendance_id }}?from=modification">詳細</a>
+                @endif
+            </td>
         </tr>
         @endforeach
     </table>
