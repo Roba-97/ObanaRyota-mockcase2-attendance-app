@@ -31,13 +31,13 @@ class AdminController extends Controller
         $displayedDate = session()->get($sessionKey)->format('Y/m/d');
         $attendances = Auth::guard('admin')->user()->getAttendancesByDate($displayedDate);
 
-        return view('admin.admin_attendance_list', compact('displayedDate', 'attendances'));
+        return view('admin.attendance_list', compact('displayedDate', 'attendances'));
     }
 
     public function showStaffList()
     {
         $staff = User::all();
-        return view('admin.admin_staff_list', compact('staff'));
+        return view('admin.staff_list', compact('staff'));
     }
 
     public function showStaffMonthlyAttendance(User $user, Request $request)
@@ -63,13 +63,13 @@ class AdminController extends Controller
         $month = session()->get($sessionKey)->month;
         $attendances = $user->attendancesByMonth($year, $month);
 
-        return view('admin.admin_staff_attendance', compact('displayedMonth', 'attendances', 'user'));
+        return view('admin.staff_attendance', compact('displayedMonth', 'attendances', 'user'));
     }
 
     public function showModificationRequest(Modification $modification)
     {
         $modification->load('attendance', 'breakModifications', 'additionalBreak');
-        return view('admin.admin_modification_request', compact('modification'));
+        return view('admin.modification_request', compact('modification'));
     }
 
     public function csvExport(User $user)

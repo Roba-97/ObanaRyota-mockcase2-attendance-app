@@ -39,7 +39,7 @@ class AttendanceController extends Controller
     {
         if (Auth::guard('admin')->check()) {
             $attendance->load('breaks');
-            return view('admin.admin_attendance_detail', compact('attendance'));
+            return view('admin.attendance_detail', compact('attendance'));
         }
 
         $isFromModification = $request->query('from') === 'modification' ? true : false;

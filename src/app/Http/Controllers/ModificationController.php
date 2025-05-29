@@ -20,7 +20,7 @@ class ModificationController extends Controller
 
         if (Auth::guard('admin')->check()) {
             $modifications = Auth::guard('admin')->user()->getAllModifications($showApproved);
-            return view('admin.admin_modification_list', compact('showApproved', 'modifications'));
+            return view('admin.modification_list', compact('showApproved', 'modifications'));
         } else {
             $modifications = Auth::user()->modifications()->where('is_approved', $showApproved)->with('attendance')->get();
             return view('modification_list', compact('showApproved', 'modifications'));
