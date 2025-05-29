@@ -2,18 +2,16 @@
 
 namespace Tests\Feature;
 
-use App\Models\Admin;
-use App\Models\Attendance;
-use App\Models\BreakTime;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
+use Tests\TestHelpers\DammyUtils;
 
 // テストケースID:6,7,8(テスト内容の各最終項目)
 class StampConfirmTest extends TestCase
 {
-    use RefreshDatabase;
+    use RefreshDatabase, DammyUtils;
 
     private $user;
     private $admin;
@@ -21,28 +19,11 @@ class StampConfirmTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
+
+        $this->admin = $this->createAdmin();
+        
         $this->user = User::factory()->create();
-
-        $attendance = Attendance::create([
-            'user_id' => $this->user->id,
-            'date' => Carbon::today()->format('Y-m-d'),
-            'punch_in' => '09:00:00',
-            'punch_out' => '17:00:00',
-            'status' => 3,
-        ]);
-        BreakTime::create([
-            'attendance_id' => $attendance->id,
-            'start_at' => '12:00:00',
-            'end_at' => '13:00:00',
-            'is_ended' => true,
-        ]);
-
-        $this->admin = Admin::create([
-            'name' => 'admin',
-            'email' => 'admin@example.com',
-            'password' => bcrypt('adminPassword'),
-            'email_verified_at' => Carbon::now(),
-        ]);
+        $this->createAttendance($this->user, Carbon::today());
     }
 
     public function test_confirm_stamp_time_in_admin_view()

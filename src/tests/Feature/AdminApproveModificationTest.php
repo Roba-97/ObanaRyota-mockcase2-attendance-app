@@ -2,20 +2,17 @@
 
 namespace Tests\Feature;
 
-use App\Models\Admin;
-use App\Models\Attendance;
-use App\Models\BreakModification;
-use App\Models\BreakTime;
 use App\Models\Modification;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
+use Tests\TestHelpers\DammyUtils;
 
 // テストケースID:15
 class AdminApproveModificationTest extends TestCase
 {
-    use RefreshDatabase;
+    use RefreshDatabase, DammyUtils;
 
     private const DAMMIES_NUM = 8;
     private const APPROVED_NUM = 4;
@@ -26,44 +23,14 @@ class AdminApproveModificationTest extends TestCase
     {
         parent::setUp();
 
-        $this->admin = Admin::create([
-            'name' => 'admin',
-            'email' => 'admin@example.com',
-            'password' => bcrypt('adminPassword'),
-            'email_verified_at' => Carbon::now(),
-        ]);
+        $this->admin = $this->createAdmin();
 
         $users = User::factory()->count(self::DAMMIES_NUM)->create();
         foreach($users as $index => $user) {
-            $attendance = Attendance::create([
-                'user_id' => $user->id,
-                'date' => '2025-06-01',
-                'punch_in' => '09:00:00',
-                'punch_out' => '17:00:00',
-                'status' => 3,
-            ]);
-            $break = BreakTime::create([
-                'attendance_id' => $attendance->id,
-                'start_at' => '12:00:00',
-                'end_at' => '13:00:00',
-                'is_ended' => true,
-            ]);
-
+            $attendance = $this->createAttendance($user, Carbon::create(2025, 6, 1));
             $isApproved = $index < self::APPROVED_NUM ? true : false;
-            $modification = Modification::create([
-                'attendance_id' => $attendance->id,
-                'modified_punch_in' => '10:00:00',
-                'modified_punch_out' => '19:00:00',
-                'comment' => '電車の遅延のため',
-                'application_date' => '2025-06-02',
-                'is_approved' => $isApproved,
-            ]);
-            BreakModification::create([
-                'modification_id' => $modification->id,
-                'break_id' => $break->id,
-                'modified_start_at' => '13:00:00',
-                'modified_end_at' => '14:00:00',
-            ]);
+
+            $this->createModification($attendance, $isApproved);
         }
     }
 

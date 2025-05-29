@@ -2,16 +2,16 @@
 
 namespace Tests\Feature;
 
-use App\Models\Attendance;
-use App\Models\BreakTime;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
+use Tests\TestHelpers\DammyUtils;
 
 // テストケースID:11.1~4
 class ModficationRequestTest extends TestCase
 {
-    use RefreshDatabase;
+    use RefreshDatabase, DammyUtils;
 
     private $user;
     private $attendance;
@@ -21,20 +21,7 @@ class ModficationRequestTest extends TestCase
         parent::setUp();
         $this->user = User::factory()->create();
 
-        $this->attendance = Attendance::create([
-            'user_id' => $this->user->id,
-            'date' => '2025-06-01',
-            'punch_in' => '09:00:00',
-            'punch_out' => '17:00:00',
-            'status' => 3,
-        ]);
-
-        BreakTime::create([
-            'attendance_id' => $this->attendance->id,
-            'start_at' => '12:00:00',
-            'end_at' => '13:00:00',
-            'is_ended' => true,
-        ]);
+        $this->attendance = $this->createAttendance($this->user, Carbon::create(2025, 6, 1));
     }
 
     public function test_modification_request_validate_stamp_consistency()
