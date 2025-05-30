@@ -21,7 +21,7 @@
         <div class="staff-attendance__last-month">
             <a href="/admin/attendance/staff/{{ $user->id }}?month=previous">
                 <img class="month-nav__icon-arrow" src="{{ asset('img/arrow.png')}}" alt="">
-                <span>先月</span>
+                <span>前月</span>
             </a>
         </div>
         <div class="staff-attendance__show-month">
