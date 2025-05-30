@@ -21,7 +21,7 @@
         <div class="attendance-list__last-month">
             <a href="/attendance/list?month=previous">
                 <img class="month-nav__icon-arrow" src="{{ asset('img/arrow.png')}}" alt="">
-                <span>先月</span>
+                <span>前月</span>
             </a>
         </div>
         <div class="attendance-list__show-month">
