@@ -111,6 +111,7 @@ class ModificationController extends Controller
             ]);
         }
 
+        $attendance = $attendance->refresh();
         return redirect("/attendance/$attendance->id");
     }
 }

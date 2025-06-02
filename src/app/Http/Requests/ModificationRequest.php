@@ -5,6 +5,8 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Validator;
 
+use function PHPUnit\Framework\isEmpty;
+
 class ModificationRequest extends FormRequest
 {
     /**
@@ -24,31 +26,48 @@ class ModificationRequest extends FormRequest
      */
     public function rules()
     {
-        return [
+        $rules =  [
             'modified_punch_in' => 'required|date_format:H:i|before:modified_punch_out',
             'modified_punch_out' => 'required|date_format:H:i|after:modified_punch_in',
-            'modified_break_in' => 'required|array',
-            'modified_break_out' => 'required|array',
-            'modified_break_in.*' => 'date_format:H:i|after_or_equal:modified_punch_in|before_or_equal:modified_punch_out',
-            'modified_break_out.*' => 'date_format:H:i|after_or_equal:modified_punch_in|before_or_equal:modified_punch_out',
             'additional_break_in' => 'nullable|date_format:H:i|after_or_equal:modified_punch_in|before_or_equal:modified_punch_out',
             'additional_break_out' => 'nullable|date_format:H:i|before_or_equal:modified_punch_out|after_or_equal:modified_punch_in',
             'comment' => 'required|max:50',
         ];
+
+        // modified_break_in の存在チェック
+        if ($this->has('modified_break_in')) {
+            $rules['modified_break_in'] = 'required|array';
+            $rules['modified_break_in.*'] = 'required|date_format:H:i|after_or_equal:modified_punch_in|before_or_equal:modified_punch_out';
+        } else {
+            $rules['modified_break_in'] = 'nullable|array';
+            $rules['modified_break_in.*'] = 'nullable|date_format:H:i|after_or_equal:modified_punch_in|before_or_equal:modified_punch_out';
+        }
+
+        // modified_break_out の存在チェック
+        if ($this->has('modified_break_out')) {
+            $rules['modified_break_out'] = 'required|array';
+            $rules['modified_break_out.*'] = 'required|date_format:H:i|after_or_equal:modified_punch_in|before_or_equal:modified_punch_out';
+        } else {
+            $rules['modified_break_out'] = 'nullable|array';
+            $rules['modified_break_out.*'] = 'nullable|date_format:H:i|after_or_equal:modified_punch_in|before_or_equal:modified_punch_out';
+        }
+
+        return $rules;
     }
 
     public function messages()
     {
         return [
-            '*.date' => '時刻は「HH:mm」形式で入力してください',
+            '*.date_format' => '時刻は「HH:mm」形式で入力してください',
 
             'modified_punch_in.required' => '出勤時刻を入力してください',
             'modified_punch_out.required' => '退勤時刻を入力してください',
             'modified_punch_in.before' => '出勤時間もしくは退勤時間が不適切な値です',
             'modified_punch_out.after' => '出勤時間もしくは退勤時間が不適切な値です',
 
-            'modified_break_in.required' => '休憩入時刻を入力してください',
-            'modified_break_out.required' => '休憩戻時刻を入力してください',
+            'modified_break_in.*.required' => '休憩開始時刻を入力してください',
+            'modified_break_out.*.required' => '休憩終了時刻を入力してください',
+
             'modified_break_in.*.before_or_equal' => '休憩時間が勤務時間外です',
             'modified_break_in.*.after_or_equal' => '休憩時間が勤務時間外です',
             'modified_break_out.*.before_or_equal' => '休憩時間が勤務時間外です',
@@ -64,12 +83,6 @@ class ModificationRequest extends FormRequest
     public function withValidator(Validator $validator)
     {
         $validator->after(function ($validator) {
-            $modIns = $this->modified_break_in;
-            $modOuts = $this->modified_break_out;
-
-            $comparisonIn = $modIns[0];
-            $comparisonOut = $modOuts[0];
-
             $addIn = $this->additional_break_in;
             $addOut = $this->additional_break_out;
 
@@ -83,21 +96,25 @@ class ModificationRequest extends FormRequest
                 }
             }
 
-            foreach ($modIns as $index => $modIn) {
-                if ($modIn > $modOuts[$index]) {
-                    $validator->errors()->add("modified_break_in.$index", '休憩入時刻は休憩戻時刻より前である必要があります');
-                }
+            $modIns = $this->modified_break_in;
+            $modOuts = $this->modified_break_out;
+            
+            if($modIns && $modOuts) {
+                foreach ($modIns as $index => $modIn) {
+                    if ($modIn > $modOuts[$index]) {
+                        $validator->errors()->add("modified_break_in.$index", '休憩入時刻は休憩戻時刻より前である必要があります');
+                    }
 
-                if ($addIn < $modOuts[$index] && $addOut > $modIn) {
-                    $validator->errors()->add('additional_break_in', '休憩時刻に重複があります');
-                }
+                    if ($addIn < $modOuts[$index] && $addOut > $modIn) {
+                        $validator->errors()->add('additional_break_in', '休憩時刻に重複があります');
+                    }
 
-                if($index > 0) {
-                    if ($modIn < $comparisonOut && $modOuts[$index] > $comparisonIn) {
-                        $validator->errors()->add("modified_break_in.$index", '休憩時刻に重複があります');
+                    if ($index > 0) {
+                        if ($modIn < $modOuts[0] && $modOuts[$index] > $modIns[0]) {
+                            $validator->errors()->add("modified_break_in.$index", '休憩時刻に重複があります');
+                        }
                     }
                 }
-
             }
         });
     }

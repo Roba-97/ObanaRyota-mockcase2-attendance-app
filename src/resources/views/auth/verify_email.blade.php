@@ -19,7 +19,7 @@
             @endif
             メール認証を完了してください。
         </p>
-        <a class="verify__button" href="http://localhost:8025/">認証はこちらから</a>
+        <a class="verify__button" href="{{ config('mail.mailhog_url', 'http://localhost:8025') }}">認証はこちらから</a>
         <form class="verify__form" action="/email/verification-notification" method="post">
             @csrf
             <button class="verify__link" type="submit">認証メールを再送する</button>
