@@ -85,18 +85,28 @@ class AdminController extends Controller
         $month = session()->get($sessionKey)->month;
         $attendances = $user->attendancesByMonth($year, $month);
 
-        foreach($attendances as $attendance) {
-            $date = Carbon::parse($attendance->date);
-            $row = [
-                $date->format('m/d') . '(' . $weekDays[$date->dayOfWeek] . ')',
-                Carbon::parse($attendance->punch_in)->format('H:i'),
-                Carbon::parse($attendance->punch_out)->format('H:i'),
-                $attendance->break_duration,
-                $attendance->work_duration
-            ];
+        $firstDayOfMonth = Carbon::createFromFormat('Y/m', $year . '/' . $month)->startOfMonth();
+        $lastDayOfMonth = $firstDayOfMonth->copy()->endOfMonth();
+
+        for ($date = $firstDayOfMonth->copy(); $date->lte($lastDayOfMonth); $date->addDay()) {
+            $attendance = $attendances->where('date', $date->copy()->format('Y-m-d'))->first();
+            if ($attendance) {
+                $row = [
+                    $date->format('m/d') . '(' . $weekDays[$date->dayOfWeek] . ')',
+                    Carbon::parse($attendance->punch_in)->format('H:i'),
+                    Carbon::parse($attendance->punch_out)->format('H:i'),
+                    $attendance->break_duration,
+                    $attendance->work_duration
+                ];
+            } else {
+                $row = [
+                    $date->format('m/d') . '(' . $weekDays[$date->dayOfWeek] . ')',
+                    '休',
+                ];
+            }
             array_push($exportData, $row);
         }
-
+ 
         $stream = fopen('php://temp', 'r+b');
         foreach ($exportData as $row) {
             fputcsv($stream, $row);
