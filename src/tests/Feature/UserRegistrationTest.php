@@ -3,10 +3,12 @@
 namespace Tests\Feature;
 
 use App\Models\User;
+use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Notification;
 use Tests\TestCase;
 
-// テストケースID:1
+// テストケースID:1, 16.1
 class UserRegistrationTest extends TestCase
 {
     use RefreshDatabase;
@@ -85,4 +87,27 @@ class UserRegistrationTest extends TestCase
         ]);
     }
 
+    public function test_verification_email_sent_properly()
+    {
+        Notification::fake();
+
+        $userData = [
+            'name' => 'Test User',
+            'email' => 'test@example.com',
+            'password' => 'password',
+            'password_confirmation' => 'password',
+        ];
+
+        $this->post(route('register'), $userData);
+        $user = User::where('email', 'test@example.com')->first();
+
+        // ユーザーがまだメール認証されていないことを確認
+        $this->assertFalse($user->hasVerifiedEmail());
+
+        // メールがユーザーに送信されたこと確認
+        Notification::assertSentTo(
+            [$user],
+            VerifyEmail::class
+        );
+    }
 }
