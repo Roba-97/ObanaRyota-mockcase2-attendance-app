@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Attendance;
+use App\Models\Modification;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -35,30 +36,33 @@ class AttendanceController extends Controller
         return view('attendance_list', compact('displayedMonth', 'attendances'));
     }
 
-    public function showDetail(Attendance $attendance, Request $request)
+    public function showDetail(Request $request, $id)
     {
         if (Auth::guard('admin')->check()) {
-            $attendance->load('breaks');
+            $attendance = Attendance::find($id)->load('breaks');
             return view('admin.attendance_detail', compact('attendance'));
         }
 
         $isFromModification = $request->query('from') === 'modification' ? true : false;
-        $isWaiting = false;
-        $modification = null;
+        if ($isFromModification) {
+            $modification = Modification::find($id)->load('breakModifications', 'additionalBreak');
+            $isWaiting = !$modification->is_approved;
+            $attendance = $modification->attendance;
+            return view('modification_request', compact('attendance','modification', 'isWaiting'));
+        }
         
+        $attendance = Attendance::find($id);
+        $isWaiting = false;
         if ($attendance->modifications()->exists()) {
             $attendance->load('modifications');
             foreach ($attendance->modifications as $mod) {
                 if (!$mod->is_approved) {
                     $isWaiting = true;
-                    if ($isFromModification) {
-                        $modification = $mod->load('breakModifications', 'additionalBreak');
-                    }
                     break;
                 }
             }
         }
-
-        return view('attendance_detail', compact('isWaiting', 'isFromModification', 'attendance', 'modification'));
+        
+        return view('attendance_detail', compact('isWaiting','attendance'));
     }
 }

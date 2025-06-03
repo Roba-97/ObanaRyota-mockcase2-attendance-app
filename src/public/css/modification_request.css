@@ -1,0 +1,87 @@
+.modification-request__inner {
+    margin: 100px 0 0;
+    width: 100%;
+}
+
+.inner__table {
+    background-color: #FFFFFF;
+    border: none;
+    border-radius: 10px;
+    table-layout: fixed;
+    width: 100%;
+}
+
+.inner__table-row {
+    border-bottom: solid 2px #E1E1E1;
+}
+
+.inner__table-row:last-of-type {
+    border-bottom: none;
+}
+
+.inner__table-header {
+    padding: 30px 60px;
+    color: #737373;
+    font-size: 1.6rem;
+    font-weight: 700;
+    text-align: left;
+    width: 40%;
+}
+
+.inner__table-cel {
+    padding: 30px 0;
+    color: #000000;
+    font-size: 1.6rem;
+    font-weight: 700;
+}
+
+.inner__table-cel--comment {
+    display: inline-block;
+    text-align: left;
+    width: 60%;
+}
+
+.inner__table-text {
+    display: inline-block;
+    text-align: center;
+    width: 120px;
+}
+
+.inner__table-text--time-separator {
+    width: auto;
+}
+
+.inner__date-group,
+.inner__time-group {
+    display: flex;
+    justify-content: space-between;
+    width: 60%;
+}
+
+.inner__waiting-message {
+    margin: 20px 0 0;
+    color: #FF000080;
+    font-size: 1.8rem;
+    font-weight: 700;
+    text-align: right;
+}
+
+@media screen and (max-width: 860px) {
+    .modification-request__inner {
+        margin: 50px 0 0;
+    }
+    .inner__table-header {
+        padding: 20px 60px;
+    }
+    .inner__table-cel {
+        padding: 20px 0;
+    }
+    .inner__date-group,
+    .inner__time-group,
+    .inner__table-cel--comment {
+        width: 80%;
+    }
+    .inner__table-text {
+        width: 100px;
+    }
+}
