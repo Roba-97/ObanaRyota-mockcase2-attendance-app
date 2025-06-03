@@ -65,10 +65,10 @@
             <td class="staff-attendance__table-text staff-attendance__table-text--bold"><a href="/attendance/{{ $attendance->id }}">詳細</a></td>
             @else
             <td class="staff-attendance__table-text">休</td>
-            <td class="staff-attendance__table-text"></td>
-            <td class="staff-attendance__table-text"></td>
-            <td class="staff-attendance__table-text"></td>
-            <td class="staff-attendance__table-text"></td>
+            <td class="staff-attendance__table-text">ー</td>
+            <td class="staff-attendance__table-text">ー</td>
+            <td class="staff-attendance__table-text">ー</td>
+            <td class="staff-attendance__table-text">ー</td>
             @endif
         </tr>
         @endfor

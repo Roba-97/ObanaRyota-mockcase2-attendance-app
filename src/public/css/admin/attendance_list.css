@@ -86,3 +86,13 @@
     color: #000000;
     text-decoration: none;
 }
+
+@media screen and (max-width: 860px) {
+    .attendance-list__date-nav {
+        margin: 30px 0;
+        min-height: 45px;
+    }
+    .date-nav__icon-calender {
+        height: 20px;
+    }
+}

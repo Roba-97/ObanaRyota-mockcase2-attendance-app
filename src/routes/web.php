@@ -34,7 +34,7 @@ Route::group(['middleware' => ['auth:admin']], function () {
 });
 
 Route::group(['middleware' => ['auth.any','verified.custom']], function () {
-    Route::get('/attendance/{attendance}', [AttendanceController::class, 'showDetail']);
+    Route::get('/attendance/{id}', [AttendanceController::class, 'showDetail']);
     Route::get('/stamp_correction_request/list', [ModificationController::class, 'showModificationList']);
 });
 

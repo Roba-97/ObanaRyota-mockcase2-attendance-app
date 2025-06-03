@@ -47,14 +47,32 @@ $date = \Carbon\Carbon::parse($displayedDate);
             <th class="attendance-list__table-header">合計</th>
             <th class="attendance-list__table-header">詳細</th>
         </tr>
-        @foreach($attendances as $attendance)
+
+        @foreach($usersWithAttendances as $user)
         <tr class="attendance-list__table-row">
-            <td class="attendance-list__table-text">{{ $attendance->user->name }}</td>
+            <td class="attendance-list__table-text">{{ $user->name }}</td>
+            @php
+            $attendance = $user->attendances->first();
+            @endphp
+            @if($attendance)
             <td class="attendance-list__table-text">{{ \Carbon\Carbon::parse($attendance->punch_in)->format('H:i'); }}</td>
             <td class="attendance-list__table-text">{{ $attendance->status === 3 ? \Carbon\Carbon::parse($attendance->punch_out)->format('H:i') : ''; }}</td>
             <td class="attendance-list__table-text">{{ $attendance->break_duration }}</td>
             <td class="attendance-list__table-text">{{ $attendance->status === 3 ? $attendance->work_duration : ''}}</td>
             <td class="attendance-list__table-text attendance-list__table-text--bold"><a href="/attendance/{{ $attendance->id }}">詳細</a></td>
+            @else
+            <td class="attendance-list__table-text">
+                @if(\Carbon\Carbon::parse($displayedDate)->isToday())
+                出勤前
+                @else
+                休
+                @endif
+            </td>
+            <td class="attendance-list__table-text">ー</td>
+            <td class="attendance-list__table-text">ー</td>
+            <td class="attendance-list__table-text">ー</td>
+            <td class="attendance-list__table-text">ー</td>
+            @endif
         </tr>
         @endforeach
     </table>

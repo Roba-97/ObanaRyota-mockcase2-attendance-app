@@ -29,9 +29,9 @@ class AdminController extends Controller
         }
 
         $displayedDate = session()->get($sessionKey)->format('Y/m/d');
-        $attendances = Auth::guard('admin')->user()->getAttendancesByDate($displayedDate);
+        $usersWithAttendances = Auth::guard('admin')->user()->getAttendancesByDate($displayedDate);
 
-        return view('admin.attendance_list', compact('displayedDate', 'attendances'));
+        return view('admin.attendance_list', compact('displayedDate', 'usersWithAttendances'));
     }
 
     public function showStaffList()
