@@ -16,7 +16,7 @@
 }
 
 .attendance-list__last-month, .attendance-list__next-month {
-    margin: 0 25px;
+    margin: 0 15px;
 }
 
 .attendance-list__last-month a, .attendance-list__next-month a {
@@ -28,13 +28,7 @@
 
 .month-nav__icon-arrow {
     display: inline-block;
-    margin: 0 10px 0 0;
-    width: 20px;
-    height: 15px;
-}
-.month-nav__icon-arrow--rotate {
-    margin: 0 0 0 10px;
-    transform: rotate(180deg);
+    margin: 0 5px;
 }
 
 .month-nav__icon-calender {
@@ -80,4 +74,15 @@
 .attendance-list__table-text:last-of-type a {
     color: #000000;
     text-decoration: none;
+}
+
+@media screen and (max-width: 860px) {
+    .attendance-list__month-nav {
+        margin: 30px 0;
+        min-height: 45px;
+    }
+
+    .month-nav__icon-calender {
+        height: 20px;
+    }
 }

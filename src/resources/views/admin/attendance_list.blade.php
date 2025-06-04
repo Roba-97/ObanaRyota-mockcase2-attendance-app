@@ -23,18 +23,18 @@ $date = \Carbon\Carbon::parse($displayedDate);
     <div class="attendance-list__date-nav">
         <div class="attendance-list__yesterday">
             <a href="/admin/attendance/list?date=yesterday">
-                <img class="date-nav__icon-arrow" src="{{ asset('img/arrow.png')}}" alt="">
+                <i class="fa-solid fa-arrow-left-long date-nav__icon-arrow"></i>
                 <span>前日</span>
             </a>
         </div>
         <div class="attendance-list__show-date">
-            <img class="date-nav__icon-calender" src="{{ asset('img/calender.png')}}" alt="">
+            <img class="date-nav__icon-calender" src="{{ asset('img/calendar.png')}}" alt="">
             <span>{{ $displayedDate }}</span>
         </div>
         <div class="attendance-list__tomorrow">
             <a href="/admin/attendance/list?date=tomorrow">
                 <span>翌日</span>
-                <img class="date-nav__icon-arrow date-nav__icon-arrow--rotate" src="{{ asset('img/arrow.png')}}" alt="">
+                <i class="fa-solid fa-arrow-right-long date-nav__icon-arrow"></i>
             </a>
         </div>
     </div>

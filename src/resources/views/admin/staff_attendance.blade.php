@@ -20,18 +20,18 @@
     <div class="staff-attendance__month-nav">
         <div class="staff-attendance__last-month">
             <a href="/admin/attendance/staff/{{ $user->id }}?month=previous">
-                <img class="month-nav__icon-arrow" src="{{ asset('img/arrow.png')}}" alt="">
+                <i class="fa-solid fa-arrow-left-long month-nav__icon-arrow"></i>
                 <span>前月</span>
             </a>
         </div>
         <div class="staff-attendance__show-month">
-            <img class="month-nav__icon-calender" src="{{ asset('img/calender.png')}}" alt="">
+            <img class="month-nav__icon-calender" src="{{ asset('img/calendar.png')}}" alt="">
             <span>{{ $displayedMonth }}</span>
         </div>
         <div class="staff-attendance__next-month">
             <a href="/admin/attendance/staff/{{ $user->id }}?month=next">
                 <span>翌月</span>
-                <img class="month-nav__icon-arrow month-nav__icon-arrow--rotate" src="{{ asset('img/arrow.png')}}" alt="">
+                <i class="fa-solid fa-arrow-right-long month-nav__icon-arrow"></i>
             </a>
         </div>
     </div>

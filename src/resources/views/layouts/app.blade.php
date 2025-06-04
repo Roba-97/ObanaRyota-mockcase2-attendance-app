@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="{{ asset('css/sanitize.css') }}">
     <link rel="stylesheet" href="{{ asset('css/common.css') }}">
     @yield('css')
+    <script src="https://kit.fontawesome.com/d165bb8b12.js" crossorigin="anonymous"></script>
 </head>
 
 <body>

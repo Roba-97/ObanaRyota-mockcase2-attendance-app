@@ -20,18 +20,18 @@
     <div class="attendance-list__month-nav">
         <div class="attendance-list__last-month">
             <a href="/attendance/list?month=previous">
-                <img class="month-nav__icon-arrow" src="{{ asset('img/arrow.png')}}" alt="">
+                <i class="fa-solid fa-arrow-left-long month-nav__icon-arrow"></i>
                 <span>前月</span>
             </a>
         </div>
         <div class="attendance-list__show-month">
-            <img class="month-nav__icon-calender" src="{{ asset('img/calender.png')}}" alt="">
+            <img class="month-nav__icon-calender" src="{{ asset('img/calendar.png')}}" alt="">
             <span>{{ $displayedMonth }}</span>
         </div>
         <div class="attendance-list__next-month">
             <a href="/attendance/list?month=next">
                 <span>翌月</span>
-                <img class="month-nav__icon-arrow month-nav__icon-arrow--rotate" src="{{ asset('img/arrow.png')}}" alt="">
+                <i class="fa-solid fa-arrow-right-long month-nav__icon-arrow"></i>
             </a>
         </div>
     </div>
