@@ -54,7 +54,7 @@ class ModificationController extends Controller
             ]);
         }
 
-        return redirect("/attendance/$attendance->id?from=modification");
+        return redirect("/attendance/$modification->id?from=modification");
     }
 
     public function approveModificationRequest(Modification $modification)

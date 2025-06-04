@@ -52,7 +52,10 @@
                     @endif
                 </td>
             </tr>
-            @foreach ($attendance->breaks as $index => $break)
+            @php
+            $breaks = $attendance->breaks()->orderBy('start_at', 'asc')->get();
+            @endphp
+            @foreach ($breaks as $index => $break)
             <tr class="form__table-row">
                 <th class="form__table-header">休憩{{ $loop->first ? '' : $loop->iteration }}</th>
                 <td class="form__table-cel">
