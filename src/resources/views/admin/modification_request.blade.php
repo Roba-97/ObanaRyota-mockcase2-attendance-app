@@ -74,7 +74,7 @@
             <tr class="form__table-row">
                 <th class="form__table-header">備考</th>
                 <td class="form__table-cel">
-                    <span class="form__table-sentence">{{ $modification->comment}} </span>
+                    <span class="form__table-comment">{{ $modification->comment}} </span>
                 </td>
             </tr>
         </table>

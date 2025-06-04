@@ -21,7 +21,6 @@
 .staff-attendance__next-month--hidden {
     visibility: hidden;
 }
-
 .staff-attendance__last-month a, .staff-attendance__next-month a {
     color: #737373;
     font-size: 1.6rem;
@@ -52,11 +51,9 @@
 .staff-attendance__table-row {
     border-bottom: solid 2px #E1E1E1;
 }
-
 .staff-attendance__table-row:first-of-type {
     border-bottom: solid 3px #E1E1E1;
 }
-
 .staff-attendance__table-row:last-of-type {
     border-bottom: none;
 }
@@ -76,7 +73,6 @@
     font-weight: 700;
     text-align: center;
 }
-
 .staff-attendance__table-text:last-of-type a {
     color: #000000;
     text-decoration: none;

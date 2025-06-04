@@ -36,6 +36,7 @@
 }
 
 .inner__table-cel--comment {
+    padding-left: 45px;
     display: inline-block;
     text-align: left;
     width: 60%;
@@ -51,8 +52,7 @@
     width: auto;
 }
 
-.inner__date-group,
-.inner__time-group {
+.inner__date-group, .inner__time-group {
     display: flex;
     justify-content: space-between;
     width: 60%;
@@ -70,17 +70,24 @@
     .modification-request__inner {
         margin: 50px 0 0;
     }
+
     .inner__table-header {
         padding: 20px 60px;
     }
+
     .inner__table-cel {
         padding: 20px 0;
     }
-    .inner__date-group,
-    .inner__time-group,
+
     .inner__table-cel--comment {
+        padding-left: 40px;
         width: 80%;
     }
+    
+    .inner__date-group, .inner__time-group {
+        width: 80%;
+    }
+
     .inner__table-text {
         width: 100px;
     }
