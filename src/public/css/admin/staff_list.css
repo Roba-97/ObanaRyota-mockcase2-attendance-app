@@ -37,7 +37,7 @@
     text-decoration: none;
 }
 
-@media screen and (max-width: 860px) {
+@media screen and (max-width: 950px) {
     .attedance-list__table {
         margin-top: 50px;
     }

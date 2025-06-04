@@ -56,7 +56,7 @@
     text-decoration: none;
 }
 
-@media screen and (max-width: 860px) {
+@media screen and (max-width: 950px) {
     .tab {
         margin: 30px 0;
     }

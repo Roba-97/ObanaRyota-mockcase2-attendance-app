@@ -66,7 +66,7 @@
     text-align: right;
 }
 
-@media screen and (max-width: 860px) {
+@media screen and (max-width: 950px) {
     .modification-request__inner {
         margin: 50px 0 0;
     }
