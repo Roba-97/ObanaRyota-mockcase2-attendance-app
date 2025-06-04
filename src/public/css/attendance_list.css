@@ -21,7 +21,6 @@
 .attendance-list__next-month--hidden {
     visibility: hidden;
 }
-
 .attendance-list__last-month a, .attendance-list__next-month a {
     color: #737373;
     font-size: 1.6rem;

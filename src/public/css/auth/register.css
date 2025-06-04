@@ -67,8 +67,21 @@
     .register-form__form {
         width: 400px;
     }
-    
+
+    .register-form__heading {
+        margin: 75px 0 20px;
+    }
+
+    .register-form__group {
+        margin-top: 40px;
+    }
+
     .register-form__input {
         height: 40px;
+    }
+
+    .register-form__btn {
+        margin: 60px 0 30px;
+        padding: 10px 0;
     }
 }

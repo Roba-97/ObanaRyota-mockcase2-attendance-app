@@ -47,8 +47,7 @@
     padding: 12px 15px;
     text-align: center;
 }
-.modification-list__table-header:nth-of-type(4),
-.modification-list__table-cel:nth-of-type(4) {
+.modification-list__table-header:nth-of-type(4), .modification-list__table-cel:nth-of-type(4) {
     padding-right: 30px;
     width: 22.5%;
 }

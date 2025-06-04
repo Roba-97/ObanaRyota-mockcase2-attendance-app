@@ -1,3 +1,7 @@
+:root {
+    --header-height: 80px;
+}
+
 html {
     font-size: 62.25%;
 }
@@ -7,7 +11,7 @@ html {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    height: 80px;
+    height: var(--header-height);
     position: sticky;
     top: 0;
 }
@@ -59,7 +63,7 @@ html {
 }
 
 .content--after-login {
-    height: calc(100vh - 80px);
+    height: calc(100vh - var(--header-height));
     background-color: #F0EFF2;
     overflow: auto;
 }
@@ -86,19 +90,27 @@ html {
 }
 
 @media screen and (max-width: 860px) {
+    :root {
+        --header-height: 60px;
+    }
+
     html {
         font-size: 43.75%;  /* タブレットでのフォントサイズは通常の70%(10px -> 7px)に*/
     }
+
     .header__logo {
         width: 225px;
         height: 24px;
     }
+
     .header__nav {
         margin-right: 12px;
     }
+
     .header__nav-item a, .header__nav-logout {
         padding: 5px 12px;
     }
+
     .content-wrapper {
         padding: 50px 0;
         width: 650px;

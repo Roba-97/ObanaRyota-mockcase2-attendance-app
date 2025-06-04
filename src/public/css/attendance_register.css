@@ -84,13 +84,16 @@
         line-height: 35px;
         width: 80px;
     }
+
     .attendance__form-flex .attendance__form:first-of-type {
         margin-right: 60px;
     }
+
     .attendance__button {
-        width: 190px;
+        width: 170px;
         padding: 15px 0;
     }
+    
     .attendance__message {
         margin: 60px 0 0;
     }
