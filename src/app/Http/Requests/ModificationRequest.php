@@ -5,8 +5,6 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Validator;
 
-use function PHPUnit\Framework\isEmpty;
-
 class ModificationRequest extends FormRequest
 {
     /**
@@ -98,19 +96,24 @@ class ModificationRequest extends FormRequest
 
             $modIns = $this->modified_break_in;
             $modOuts = $this->modified_break_out;
-            
-            if($modIns && $modOuts) {
-                foreach ($modIns as $index => $modIn) {
-                    if ($modIn > $modOuts[$index]) {
-                        $validator->errors()->add("modified_break_in.$index", '休憩入時刻は休憩戻時刻より前である必要があります');
-                    }
 
-                    if ($addIn < $modOuts[$index] && $addOut > $modIn) {
-                        $validator->errors()->add('additional_break_in', '休憩時刻に重複があります');
-                    }
+            if (!($modIns && $modOuts)) {
+                return;
+            }
 
-                    if ($index > 0) {
-                        if ($modIn < $modOuts[0] && $modOuts[$index] > $modIns[0]) {
+            foreach ($modIns as $index => $modIn) {
+                if ($modIn > $modOuts[$index]) {
+                    $validator->errors()->add("modified_break_in.$index", '休憩入時刻は休憩戻時刻より前である必要があります');
+                }
+
+                if ($addIn < $modOuts[$index] && $addOut > $modIn) {
+                    $validator->errors()->add('additional_break_in', '休憩時刻に重複があります');
+                }
+
+                // modIns(Outs)が複数の場合、その組み合わせ全てに対して重複の判定
+                if ($index > 0) {
+                    for ($j = 0; $j < $index; $j++) {
+                        if ($modIn < $modOuts[$j] && $modOuts[$index] > $modIns[$j]) {
                             $validator->errors()->add("modified_break_in.$index", '休憩時刻に重複があります');
                         }
                     }
