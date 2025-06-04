@@ -97,6 +97,10 @@ class AdminController extends Controller
         $lastDayOfMonth = $firstDayOfMonth->copy()->endOfMonth();
 
         for ($date = $firstDayOfMonth->copy(); $date->lte($lastDayOfMonth); $date->addDay()) {
+            if($date->isToday()) {
+                break;
+            }
+
             $attendance = $attendances->where('date', $date->copy()->format('Y-m-d'))->first();
             if ($attendance) {
                 $row = [
