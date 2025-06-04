@@ -28,6 +28,10 @@ class AdminController extends Controller
             }
         }
 
+        if (session()->get($sessionKey)->isFuture()) {
+            session()->put($sessionKey, Carbon::today());
+        }
+
         $displayedDate = session()->get($sessionKey)->format('Y/m/d');
         $usersWithAttendances = Auth::guard('admin')->user()->getAttendancesByDate($displayedDate);
 
@@ -55,6 +59,10 @@ class AdminController extends Controller
             if ($monthInput === 'previous') {
                 session()->put($sessionKey, session()->get($sessionKey)->subMonth(1));
             }
+        }
+
+        if (session()->get($sessionKey)->isFuture()) {
+            session()->put($sessionKey, Carbon::today());
         }
 
         $displayedMonth = session()->get($sessionKey)->format('Y/m');

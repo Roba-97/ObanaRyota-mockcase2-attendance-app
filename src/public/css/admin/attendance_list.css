@@ -18,6 +18,9 @@
 .attendance-list__yesterday, .attendance-list__tomorrow {
     margin: 0 15px;
 }
+.attendance-list__tomorrow--hidden {
+    visibility: hidden;
+}
 
 .attendance-list__yesterday a, .attendance-list__tomorrow a {
     color: #737373;

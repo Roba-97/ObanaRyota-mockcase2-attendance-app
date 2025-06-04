@@ -31,7 +31,7 @@ $date = \Carbon\Carbon::parse($displayedDate);
             <img class="date-nav__icon-calender" src="{{ asset('img/calendar.png')}}" alt="">
             <span>{{ $displayedDate }}</span>
         </div>
-        <div class="attendance-list__tomorrow">
+        <div @class(['attendance-list__tomorrow', 'attendance-list__tomorrow--hidden' => $date->isToday()])>
             <a href="/admin/attendance/list?date=tomorrow">
                 <span>翌日</span>
                 <i class="fa-solid fa-arrow-right-long date-nav__icon-arrow"></i>
@@ -63,7 +63,7 @@ $date = \Carbon\Carbon::parse($displayedDate);
             @else
             <td class="attendance-list__table-text">
                 @if(\Carbon\Carbon::parse($displayedDate)->isToday())
-                出勤前
+                勤務外
                 @else
                 休
                 @endif

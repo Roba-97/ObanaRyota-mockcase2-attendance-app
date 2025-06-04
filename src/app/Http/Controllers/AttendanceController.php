@@ -27,6 +27,10 @@ class AttendanceController extends Controller
             }
         }
 
+        if (session()->get($sessionKey)->isFuture()) {
+            session()->put($sessionKey, Carbon::today());
+        }
+
         $displayedMonth = session()->get($sessionKey)->format('Y/m');
 
         $year = session()->get($sessionKey)->year;

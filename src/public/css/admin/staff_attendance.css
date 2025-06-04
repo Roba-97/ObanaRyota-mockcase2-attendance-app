@@ -18,6 +18,9 @@
 .staff-attendance__last-month, .staff-attendance__next-month {
     margin: 0 15px;
 }
+.staff-attendance__next-month--hidden {
+    visibility: hidden;
+}
 
 .staff-attendance__last-month a, .staff-attendance__next-month a {
     color: #737373;

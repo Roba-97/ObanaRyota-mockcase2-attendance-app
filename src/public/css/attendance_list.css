@@ -18,6 +18,9 @@
 .attendance-list__last-month, .attendance-list__next-month {
     margin: 0 15px;
 }
+.attendance-list__next-month--hidden {
+    visibility: hidden;
+}
 
 .attendance-list__last-month a, .attendance-list__next-month a {
     color: #737373;
