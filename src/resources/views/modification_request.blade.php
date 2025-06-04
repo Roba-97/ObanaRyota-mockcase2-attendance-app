@@ -77,10 +77,10 @@
                 </td>
             </tr>
         </table>
-        @if ($isWaiting)
-        <p class="inner__waiting-message">*上記の修正内容を申請しています。</p>
-        @else
+        @if ($modification->is_approved)
         <p class="inner__waiting-message">*上記の内容で修正が承認されました。</p>
+        @else
+        <p class="inner__waiting-message">*上記の修正内容を申請しています。</p>
         @endif
     </div>
 </div>

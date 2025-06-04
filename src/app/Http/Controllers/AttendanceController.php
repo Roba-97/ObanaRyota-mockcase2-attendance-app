@@ -50,23 +50,15 @@ class AttendanceController extends Controller
         $isFromModification = $request->query('from') === 'modification' ? true : false;
         if ($isFromModification) {
             $modification = Modification::find($id)->load('breakModifications', 'additionalBreak');
-            $isWaiting = !$modification->is_approved;
             $attendance = $modification->attendance;
-            return view('modification_request', compact('attendance','modification', 'isWaiting'));
+            return view('modification_request', compact('attendance', 'modification'));
         }
-        
+
         $attendance = Attendance::find($id);
-        $isWaiting = false;
-        if ($attendance->modifications()->exists()) {
-            $attendance->load('modifications');
-            foreach ($attendance->modifications as $mod) {
-                if (!$mod->is_approved) {
-                    $isWaiting = true;
-                    break;
-                }
-            }
-        }
-        
-        return view('attendance_detail', compact('isWaiting','attendance'));
+
+        $latestModification = $attendance->modifications()->latest()->first();
+        $isWaiting = $latestModification && !$latestModification->is_approved ? true : false;
+
+        return view('attendance_detail', compact('isWaiting', 'attendance'));
     }
 }
