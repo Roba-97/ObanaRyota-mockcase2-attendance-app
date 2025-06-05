@@ -43,8 +43,7 @@ class EmailVerificationTest extends DuskTestCase
             }
 
             $browser->assertPathIs('/attendance')
-                ->assertSee('出勤')
-                ->screenshot('verified');
+                ->assertSee('出勤');
         });
     }
 }

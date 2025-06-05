@@ -44,9 +44,10 @@ class AdminStaffListTest extends DuskTestCase
 
         // ユーザの今月の勤怠データ作成
         $startOfMonth = Carbon::today()->startOfMonth();
-        for ($day = 1; $day <= 31; $day += 5) {
-            $date = $startOfMonth->copy()->addDays($day);
+        $date = $startOfMonth->copy();
+        while (!$date->isTomorrow()) {
             $this->createAttendance($user, $date);
+            $date->addDay();
         }
 
         $attendances = $user->attendancesByMonth(Carbon::today()->year, Carbon::today()->month);

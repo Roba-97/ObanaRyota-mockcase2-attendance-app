@@ -58,7 +58,7 @@ class ModficationRequestTest extends TestCase
         $response = $this->actingAs($user)->post("/stamp_correction_request/$attendance->id", [
             'modified_punch_in' => '09:00',
             'modified_punch_out' => '17:00',
-            'modified_break_in' => ['18:00'],
+            'modified_break_in' => ['18:00'], // 休憩開始時刻が退勤時刻より後
             'modified_break_out' => ['19:00'],
             'additional_break_in' => null,
             'additional_break_out' => null,
@@ -78,7 +78,7 @@ class ModficationRequestTest extends TestCase
             'modified_punch_in' => '09:00',
             'modified_punch_out' => '17:00',
             'modified_break_in' => ['16:00'],
-            'modified_break_out' => ['18:00'],
+            'modified_break_out' => ['18:00'], // 休憩終了時刻が退勤時刻より後
             'additional_break_in' => null,
             'additional_break_out' => null,
             'comment' => 'test'
