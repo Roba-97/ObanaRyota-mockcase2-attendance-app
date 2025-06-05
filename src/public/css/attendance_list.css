@@ -73,6 +73,12 @@
     font-weight: 700;
     text-align: center;
 }
+.attendance-list__table-text--saturday {
+    color: #0000FF80;
+}
+.attendance-list__table-text--sunday {
+    color: #FF000080;
+}
 .attendance-list__table-text:last-of-type a {
     color: #000000;
     text-decoration: none;

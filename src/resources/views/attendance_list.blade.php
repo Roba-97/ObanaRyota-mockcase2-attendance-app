@@ -59,7 +59,9 @@
         $attendance = $attendances->where('date', $date->copy()->format('Y-m-d'))->first();
         @endphp
         <tr class="attendance-list__table-row">
-            <td class="attendance-list__table-text">{{ $date->format('m/d') }}({{ $weekDays[$date->dayOfWeek] }})</td>
+            <td @class(['attendance-list__table-text', 'attendance-list__table-text--saturday'=> $date->isSaturday(), 'attendance-list__table-text--sunday' => $date->isSunday()]) >
+                {{ $date->format('m/d') }}({{ $weekDays[$date->dayOfWeek] }})
+            </td>
             @if ($attendance)
             <td class="attendance-list__table-text">{{ \Carbon\Carbon::parse($attendance->punch_in)->format('H:i'); }}</td>
             <td class="attendance-list__table-text">{{ $attendance->status === 3 ? \Carbon\Carbon::parse($attendance->punch_out)->format('H:i') : '' }}</td>

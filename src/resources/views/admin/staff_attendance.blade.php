@@ -28,7 +28,7 @@
             <img class="month-nav__icon-calender" src="{{ asset('img/calendar.png')}}" alt="">
             <span>{{ $displayedMonth }}</span>
         </div>
-        <div @class(['staff-attendance__next-month', 'staff-attendance__next-month--hidden' => \Carbon\Carbon::createFromFormat('Y/m', $displayedMonth)->isCurrentMonth()])>
+        <div @class(['staff-attendance__next-month', 'staff-attendance__next-month--hidden'=> \Carbon\Carbon::createFromFormat('Y/m', $displayedMonth)->isCurrentMonth()])>
             <a href="/admin/attendance/staff/{{ $user->id }}?month=next">
                 <span>翌月</span>
                 <i class="fa-solid fa-arrow-right-long month-nav__icon-arrow"></i>
@@ -59,7 +59,9 @@
         $attendance = $attendances->where('date', $date->copy()->format('Y-m-d'))->first();
         @endphp
         <tr class="staff-attendance__table-row">
-            <td class="staff-attendance__table-text">{{ $date->format('m/d') }}({{ $weekDays[$date->dayOfWeek] }})</td>
+            <td @class(['staff-attendance__table-text', 'staff-attendance__table-text--saturday'=> $date->isSaturday(), 'staff-attendance__table-text--sunday' => $date->isSunday()])>
+                {{ $date->format('m/d') }}({{ $weekDays[$date->dayOfWeek] }})
+            </td>
             @if ($attendance)
             <td class="staff-attendance__table-text">{{ \Carbon\Carbon::parse($attendance->punch_in)->format('H:i'); }}</td>
             <td class="staff-attendance__table-text">{{ $attendance->status === 3 ? \Carbon\Carbon::parse($attendance->punch_out)->format('H:i') : '' }}</td>
