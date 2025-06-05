@@ -1,0 +1,109 @@
+.staff-attendance__month-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 50px 0;
+    background-color: #FFFFFF;
+    border: none;
+    border-radius: 10px;
+    min-height: 60px;
+    width: 100%;
+}
+
+.staff-attendance__show-month {
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+.staff-attendance__last-month, .staff-attendance__next-month {
+    margin: 0 15px;
+}
+.staff-attendance__next-month--hidden {
+    visibility: hidden;
+}
+.staff-attendance__last-month a, .staff-attendance__next-month a {
+    color: #737373;
+    font-size: 1.6rem;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.month-nav__icon-arrow {
+    display: inline-block;
+    margin: 0 5px;
+}
+
+.month-nav__icon-calender {
+    display: inline-block;
+    margin-right: 10px;
+    height: 25px;
+    aspect-ratio: 1;
+}
+
+.staff-attendance__table {
+    background-color: #FFFFFF;
+    border: none;
+    border-radius: 10px;
+    width: 100%;
+    table-layout: fixed;
+}
+
+.staff-attendance__table-row {
+    border-bottom: solid 2px #E1E1E1;
+}
+.staff-attendance__table-row:first-of-type {
+    border-bottom: solid 3px #E1E1E1;
+}
+.staff-attendance__table-row:last-of-type {
+    border-bottom: none;
+}
+
+.staff-attendance__table-header {
+    padding: 10px 0;
+    color: #737373;
+    font-size: 1.6rem;
+    font-weight: 700;
+    text-align: center;
+}
+
+.staff-attendance__table-text {
+    padding: 10px 0;
+    color: #737373;
+    font-size: 1.6rem;
+    font-weight: 700;
+    text-align: center;
+}
+.staff-attendance__table-text--saturday {
+    color: #0000FF80;
+}
+.staff-attendance__table-text--sunday {
+    color: #FF000080;
+}
+.staff-attendance__table-text:last-of-type a {
+    color: #000000;
+    text-decoration: none;
+}
+
+.staff-attendance__button {
+    display: block;
+    margin: 60px 0 0 auto;
+    padding: 10px 40px;
+    background-color: #000000;
+    border: none;
+    border-radius: 5px;
+    color: #FFFFFF;
+    font-size: 2.2rem;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+@media screen and (max-width: 950px) {
+    .staff-attendance__month-nav {
+        margin: 30px 0;
+        min-height: 45px;
+    }
+
+    .month-nav__icon-calender {
+        height: 20px;
+    }
+}

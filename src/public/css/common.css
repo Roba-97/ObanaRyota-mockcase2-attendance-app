@@ -1,0 +1,118 @@
+:root {
+    --header-height: 80px;
+}
+
+html {
+    font-size: 62.25%;
+}
+
+.header {
+    background-color: #000000;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: var(--header-height);
+    position: sticky;
+    top: 0;
+}
+
+.header__heading {
+    display: none;
+}
+
+.header__logo {
+    background-image: url(../img/logo.svg);
+    background-size: cover;
+    display: inline-block;
+    margin: auto 20px;
+    width: 300px;
+    height: 32px;
+}
+
+.header__nav {
+    margin-right: 20px;
+}
+
+.header__nav-list {
+    display: flex;
+    justify-content: space-around;
+    font-size: 2.4rem;
+}
+
+.header__nav-item a {
+    display: inline-block;
+    padding: 5px 15px;
+    color: #FFFFFF;
+    text-decoration: none;
+    font-size: inherit;
+}
+
+.header__nav-logout {
+    display: inline-block;
+    padding: 5px 15px;
+    background: inherit;
+    border: none;
+    color: #FFFFFF;
+    font-size: inherit;
+}
+
+.content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.content--after-login {
+    height: calc(100vh - var(--header-height));
+    background-color: #F0EFF2;
+    overflow: auto;
+}
+
+.content-wrapper {
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+    padding: 100px 0;
+    width: 900px;
+}
+
+.content__about {
+    margin: 0;
+    border-left: solid 8px #000000;
+}
+
+.content__about-text {
+    margin: 0;
+    padding-left: 20px;
+    font-size: 3rem;
+    font-weight: 700;
+    text-align: left;
+}
+
+@media screen and (max-width: 950px) {
+    :root {
+        --header-height: 60px;
+    }
+
+    html {
+        font-size: 43.75%;  /* タブレットでのフォントサイズは通常の70%(10px -> 7px)に*/
+    }
+
+    .header__logo {
+        width: 225px;
+        height: 24px;
+    }
+
+    .header__nav {
+        margin-right: 12px;
+    }
+
+    .header__nav-item a, .header__nav-logout {
+        padding: 5px 12px;
+    }
+
+    .content-wrapper {
+        padding: 50px 0;
+        width: 650px;
+    }
+}

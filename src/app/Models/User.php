@@ -8,7 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
     use HasApiTokens, HasFactory, Notifiable;
 
@@ -41,4 +41,30 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function attendances()
+    {
+        return $this->hasMany(Attendance::class);
+    }
+
+    public function modifications()
+    {
+        return $this->hasManyThrough(Modification::class, Attendance::class);
+    }
+
+    public function attendancesByMonth($year, $month)
+    {
+        return $this->attendances()
+            ->whereYear('date', $year)
+            ->whereMonth('date', $month)
+            ->orderBy('date')
+            ->get();
+    }
+
+    public function findTodayAttendance()
+    {
+        return $this->attendances()
+            ->whereDate('date', today())
+            ->first();
+    }
 }

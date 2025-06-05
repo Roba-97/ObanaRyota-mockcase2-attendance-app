@@ -1,0 +1,147 @@
+.attendance-detail__form {
+    margin: 100px 0 0;
+    width: 100%;
+}
+
+.form__table {
+    background-color: #FFFFFF;
+    border: none;
+    border-radius: 10px;
+    table-layout: fixed;
+    width: 100%;
+}
+
+.form__table-row {
+    border-bottom: solid 2px #E1E1E1;
+}
+.form__table-row:last-of-type {
+    border-bottom: none;
+}
+
+.form__table-header {
+    padding: 30px 60px;
+    color: #737373;
+    font-size: 1.6rem;
+    font-weight: 700;
+    text-align: left;
+    width: 40%;
+}
+
+.form__table-cel {
+    padding: 30px 0;
+    color: #000000;
+    font-size: 1.6rem;
+    font-weight: 700;
+}
+
+.form__table-text {
+    display: inline-block;
+    text-align: center;
+    width: 120px;
+}
+.form__table-text--time-separator {
+    width: auto;
+}
+
+.form__date-group, .form__time-group {
+    display: flex;
+    justify-content: space-between;
+    width: 60%;
+}
+
+.form__input {
+    padding: 5px;
+    border: solid 1px #D9D9D9;
+    border-radius: 4px;
+    font: inherit;
+    text-align: center;
+    outline: none;
+    width: 120px;
+}
+.form__input[type="time"]::-webkit-calendar-picker-indicator {
+    display: none;
+}
+.form__input[readonly] {
+    border: none;
+}
+
+.form__textarea {
+    padding: 10px 12px;
+    border: solid 1px #D9D9D9;
+    border-radius: 4px;
+    font-size: 1.4rem;
+    font-weight: 700;
+    outline: none;
+    resize: none;
+    width: 60%;
+}
+.form__textarea[readonly] {
+    border: none;
+}
+
+.form__button {
+    display: block;
+    margin: 75px 0 0 auto;
+    padding: 10px 40px;
+    background-color: #000000;
+    border: none;
+    border-radius: 5px;
+    color: #FFFFFF;
+    font-size: 2.2rem;
+    font-weight: 700;
+}
+
+.form__confirm-link {
+    display: inline-block;
+    margin: 20px 0 0;
+    padding: 10px 40px;
+    background-color: #000000;
+    border: none;
+    border-radius: 5px;
+    color: #FFFFFF;
+    font-size: 2.2rem;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.form__error-message {
+    margin: 10px 0 0 0;
+    color: #FF000080;
+    font-size: 1.2rem;
+    font-weight: 700;
+}
+
+.form__waiting-message {
+    margin: 20px 0 0;
+    color: #FF000080;
+    font-size: 1.8rem;
+    font-weight: 700;
+    text-align: right;
+}
+
+@media screen and (max-width: 950px) {
+    .attendance-detail__form {
+        margin: 50px 0 0;
+    }
+
+    .form__table-header {
+        padding: 20px 60px;
+    }
+
+    .form__table-cel {
+        padding: 20px 0;
+    }
+
+    .form__table-text, .form__input {
+        width: 100px;
+    }
+    
+    .form__date-group, .form__time-group, .form__textarea {
+        width: 80%;
+    }
+
+    .form__button {
+        margin: 40px 0 0 auto;
+        padding: 8px 30px;
+    }
+}

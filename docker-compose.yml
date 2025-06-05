@@ -45,3 +45,12 @@ services:
     ports:
       - "8025:8025"
       - "1025:1025"
+
+  selenium:
+    image: selenium/standalone-chrome-debug
+    ports:
+      - 4444:4444
+      - 5900:5900
+    depends_on:
+      - nginx
+    privileged: true
