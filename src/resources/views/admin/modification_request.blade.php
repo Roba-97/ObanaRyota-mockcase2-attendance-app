@@ -15,7 +15,7 @@
 @section('content')
 <div class="content-wrapper">
     <div class="content__about">
-        <h2 class="content__about-text">勤怠詳細</h2>
+        <h2 class="content__about-text">申請承認</h2>
     </div>
     <form class="modification-request__form" action="/stamp_correction_request/approve/{{ $modification->id }}" method="post">
         @csrf

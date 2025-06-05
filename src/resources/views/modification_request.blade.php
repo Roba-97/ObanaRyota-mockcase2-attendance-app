@@ -15,7 +15,7 @@
 @section('content')
 <div class="content-wrapper">
     <div class="content__about">
-        <h2 class="content__about-text">勤怠詳細</h2>
+        <h2 class="content__about-text">申請詳細</h2>
     </div>
     <div class="modification-request__inner">
         <table class="inner__table">
