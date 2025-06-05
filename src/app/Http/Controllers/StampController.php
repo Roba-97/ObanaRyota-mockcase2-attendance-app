@@ -26,8 +26,8 @@ class StampController extends Controller
         Attendance::create([
             'user_id' => Auth::user()->id,
             'date' => $punchIn->format('Y-m-d'),
-            'punch_in' => $punchIn->format('H:i'),
-            'punch_out' => $punchIn->format('H:i'),
+            'punch_in' => $punchIn->startOfMinute()->format('H:i:s'),
+            'punch_out' => $punchIn->startOfMinute()->format('H:i:s'),
             'status' => 1
         ]);
 
@@ -40,7 +40,7 @@ class StampController extends Controller
         $todayAttendance = Auth::user()->findTodayAttendance();
 
         $todayAttendance->update([
-            'punch_out' => $punchOut->format('H:i'),
+            'punch_out' => $punchOut->startOfMinute()->format('H:i:s'),
             'status' => 3
         ]);
 
@@ -55,8 +55,8 @@ class StampController extends Controller
         $todayAttendance->update(['status' => 2]);
         BreakTime::create([
             'attendance_id' => $todayAttendance->id,
-            'start_at' => $breakIn->format('H:i'),
-            'end_at' => $breakIn->format('H:i'),
+            'start_at' => $breakIn->startOfMinute()->format('H:i:s'),
+            'end_at' => $breakIn->startOfMinute()->format('H:i:s'),
         ]);
 
         return redirect('/attendance');
@@ -68,7 +68,12 @@ class StampController extends Controller
         $todayAttendance = Auth::user()->findTodayAttendance();
 
         $todayAttendance->update(['status' => 1]);
-        $todayAttendance->breaks()->where('is_ended', false)->first()->update(['end_at' => $breakOut->format('H:i'), 'is_ended' => true]);
+        $todayAttendance->breaks()
+            ->where('is_ended', false)->first()
+            ->update([
+                'end_at' => $breakOut->startOfMinute()->format('H:i:s'),
+                'is_ended' => true
+            ]);
 
         return redirect('/attendance');
     }

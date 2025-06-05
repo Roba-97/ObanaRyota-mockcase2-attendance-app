@@ -5,7 +5,7 @@
 @endsection
 
 @section('css')
-<link rel="stylesheet" href="{{ asset('css/admin/admin_attendance_list.css')}}">
+<link rel="stylesheet" href="{{ asset('css/admin/attendance_list.css')}}">
 @endsection
 
 @section('header')
@@ -23,18 +23,18 @@ $date = \Carbon\Carbon::parse($displayedDate);
     <div class="attendance-list__date-nav">
         <div class="attendance-list__yesterday">
             <a href="/admin/attendance/list?date=yesterday">
-                <img class="date-nav__icon-arrow" src="{{ asset('img/arrow.png')}}" alt="">
+                <i class="fa-solid fa-arrow-left-long date-nav__icon-arrow"></i>
                 <span>前日</span>
             </a>
         </div>
         <div class="attendance-list__show-date">
-            <img class="date-nav__icon-calender" src="{{ asset('img/calender.png')}}" alt="">
+            <img class="date-nav__icon-calender" src="{{ asset('img/calendar.png')}}" alt="">
             <span>{{ $displayedDate }}</span>
         </div>
-        <div class="attendance-list__tomorrow">
+        <div @class(['attendance-list__tomorrow', 'attendance-list__tomorrow--hidden' => $date->isToday()])>
             <a href="/admin/attendance/list?date=tomorrow">
                 <span>翌日</span>
-                <img class="date-nav__icon-arrow date-nav__icon-arrow--rotate" src="{{ asset('img/arrow.png')}}" alt="">
+                <i class="fa-solid fa-arrow-right-long date-nav__icon-arrow"></i>
             </a>
         </div>
     </div>
@@ -47,14 +47,32 @@ $date = \Carbon\Carbon::parse($displayedDate);
             <th class="attendance-list__table-header">合計</th>
             <th class="attendance-list__table-header">詳細</th>
         </tr>
-        @foreach($attendances as $attendance)
+
+        @foreach($usersWithAttendances as $user)
         <tr class="attendance-list__table-row">
-            <td class="attendance-list__table-text">{{ $attendance->user->name }}</td>
+            <td class="attendance-list__table-text">{{ $user->name }}</td>
+            @php
+            $attendance = $user->attendances->first();
+            @endphp
+            @if($attendance)
             <td class="attendance-list__table-text">{{ \Carbon\Carbon::parse($attendance->punch_in)->format('H:i'); }}</td>
             <td class="attendance-list__table-text">{{ $attendance->status === 3 ? \Carbon\Carbon::parse($attendance->punch_out)->format('H:i') : ''; }}</td>
             <td class="attendance-list__table-text">{{ $attendance->break_duration }}</td>
             <td class="attendance-list__table-text">{{ $attendance->status === 3 ? $attendance->work_duration : ''}}</td>
             <td class="attendance-list__table-text attendance-list__table-text--bold"><a href="/attendance/{{ $attendance->id }}">詳細</a></td>
+            @else
+            <td class="attendance-list__table-text">
+                @if(\Carbon\Carbon::parse($displayedDate)->isToday())
+                勤務外
+                @else
+                休
+                @endif
+            </td>
+            <td class="attendance-list__table-text">ー</td>
+            <td class="attendance-list__table-text">ー</td>
+            <td class="attendance-list__table-text">ー</td>
+            <td class="attendance-list__table-text">ー</td>
+            @endif
         </tr>
         @endforeach
     </table>

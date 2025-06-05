@@ -5,7 +5,7 @@
 @endsection
 
 @section('css')
-<link rel="stylesheet" href="{{ asset('css/admin/admin_modification_request.css') }}">
+<link rel="stylesheet" href="{{ asset('css/admin/modification_request.css') }}">
 @endsection
 
 @section('header')
@@ -15,7 +15,7 @@
 @section('content')
 <div class="content-wrapper">
     <div class="content__about">
-        <h2 class="content__about-text">勤怠詳細</h2>
+        <h2 class="content__about-text">申請承認</h2>
     </div>
     <form class="modification-request__form" action="/stamp_correction_request/approve/{{ $modification->id }}" method="post">
         @csrf
@@ -74,7 +74,7 @@
             <tr class="form__table-row">
                 <th class="form__table-header">備考</th>
                 <td class="form__table-cel">
-                    <span class="form__table-sentence">{{ $modification->comment}} </span>
+                    <span class="form__table-comment">{{ $modification->comment}} </span>
                 </td>
             </tr>
         </table>

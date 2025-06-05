@@ -83,15 +83,15 @@ class ModificationRequestTest extends DuskTestCase
         $attendance = $this->createAttendance($user, Carbon::today());
         $modification = $this->createModification($attendance, false);
 
-        $this->browse(function (Browser $browser) use ($user, $attendance, $modification) {
+        $this->browse(function (Browser $browser) use ($user, $modification) {
             $browser->loginAs($user)
                 ->visit('/stamp_correction_request/list')
                 ->clickLink('詳細')
-                ->assertPathIs("/attendance/$attendance->id")
-                ->assertInputValue('modified_punch_in', Carbon::parse($modification->modified_punch_in)->format('H:i'))
-                ->assertInputValue('modified_punch_out', Carbon::parse($modification->modified_punch_out)->format('H:i'))
+                ->assertPathIs("/attendance/$modification->id")
+                ->assertSee(Carbon::parse($modification->modified_punch_in)->format('H:i'))
+                ->assertSee(Carbon::parse($modification->modified_punch_out)->format('H:i'))
                 ->assertSee($modification->comment)
-                ->assertSee('承認待ちのため修正はできません。');
+                ->assertSee('上記の修正内容を申請しています。');
         });
     }
 }

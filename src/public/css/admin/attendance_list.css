@@ -15,13 +15,13 @@
     font-weight: 700;
 }
 
-.attendance-list__yesterday,
-.attendance-list__tomorrow {
-    margin: 0 25px;
+.attendance-list__yesterday, .attendance-list__tomorrow {
+    margin: 0 15px;
 }
-
-.attendance-list__yesterday a,
-.attendance-list__tomorrow a {
+.attendance-list__tomorrow--hidden {
+    visibility: hidden;
+}
+.attendance-list__yesterday a, .attendance-list__tomorrow a {
     color: #737373;
     font-size: 1.6rem;
     font-weight: 700;
@@ -30,13 +30,7 @@
 
 .date-nav__icon-arrow {
     display: inline-block;
-    margin: 0 10px 0 0;
-    width: 20px;
-    height: 15px;
-}
-.date-nav__icon-arrow--rotate {
-    margin: 0 0 0 10px;
-    transform: rotate(180deg);
+    margin: 0 5px;
 }
 
 .date-nav__icon-calender {
@@ -57,11 +51,9 @@
 .attendance-list__table-row {
     border-bottom: solid 2px #E1E1E1;
 }
-
 .attendance-list__table-row:first-of-type {
     border-bottom: solid 3px #E1E1E1;
 }
-
 .attendance-list__table-row:last-of-type {
     border-bottom: none;
 }
@@ -81,8 +73,18 @@
     font-weight: 700;
     text-align: center;
 }
-
 .attendance-list__table-text:last-of-type a {
     color: #000000;
     text-decoration: none;
+}
+
+@media screen and (max-width: 950px) {
+    .attendance-list__date-nav {
+        margin: 30px 0;
+        min-height: 45px;
+    }
+
+    .date-nav__icon-calender {
+        height: 20px;
+    }
 }

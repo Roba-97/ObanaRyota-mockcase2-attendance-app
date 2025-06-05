@@ -16,9 +16,11 @@
 }
 
 .attendance-list__last-month, .attendance-list__next-month {
-    margin: 0 25px;
+    margin: 0 15px;
 }
-
+.attendance-list__next-month--hidden {
+    visibility: hidden;
+}
 .attendance-list__last-month a, .attendance-list__next-month a {
     color: #737373;
     font-size: 1.6rem;
@@ -28,13 +30,7 @@
 
 .month-nav__icon-arrow {
     display: inline-block;
-    margin: 0 10px 0 0;
-    width: 20px;
-    height: 15px;
-}
-.month-nav__icon-arrow--rotate {
-    margin: 0 0 0 10px;
-    transform: rotate(180deg);
+    margin: 0 5px;
 }
 
 .month-nav__icon-calender {
@@ -77,7 +73,24 @@
     font-weight: 700;
     text-align: center;
 }
+.attendance-list__table-text--saturday {
+    color: #0000FF80;
+}
+.attendance-list__table-text--sunday {
+    color: #FF000080;
+}
 .attendance-list__table-text:last-of-type a {
     color: #000000;
     text-decoration: none;
+}
+
+@media screen and (max-width: 950px) {
+    .attendance-list__month-nav {
+        margin: 30px 0;
+        min-height: 45px;
+    }
+
+    .month-nav__icon-calender {
+        height: 20px;
+    }
 }

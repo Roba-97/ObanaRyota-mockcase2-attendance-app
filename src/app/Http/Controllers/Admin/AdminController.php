@@ -28,16 +28,20 @@ class AdminController extends Controller
             }
         }
 
-        $displayedDate = session()->get($sessionKey)->format('Y/m/d');
-        $attendances = Auth::guard('admin')->user()->getAttendancesByDate($displayedDate);
+        if (session()->get($sessionKey)->isFuture()) {
+            session()->put($sessionKey, Carbon::today());
+        }
 
-        return view('admin.admin_attendance_list', compact('displayedDate', 'attendances'));
+        $displayedDate = session()->get($sessionKey)->format('Y/m/d');
+        $usersWithAttendances = Auth::guard('admin')->user()->getAttendancesByDate($displayedDate);
+
+        return view('admin.attendance_list', compact('displayedDate', 'usersWithAttendances'));
     }
 
     public function showStaffList()
     {
         $staff = User::all();
-        return view('admin.admin_staff_list', compact('staff'));
+        return view('admin.staff_list', compact('staff'));
     }
 
     public function showStaffMonthlyAttendance(User $user, Request $request)
@@ -57,19 +61,23 @@ class AdminController extends Controller
             }
         }
 
+        if (session()->get($sessionKey)->isFuture()) {
+            session()->put($sessionKey, Carbon::today());
+        }
+
         $displayedMonth = session()->get($sessionKey)->format('Y/m');
 
         $year = session()->get($sessionKey)->year;
         $month = session()->get($sessionKey)->month;
         $attendances = $user->attendancesByMonth($year, $month);
 
-        return view('admin.admin_staff_attendance', compact('displayedMonth', 'attendances', 'user'));
+        return view('admin.staff_attendance', compact('displayedMonth', 'attendances', 'user'));
     }
 
     public function showModificationRequest(Modification $modification)
     {
         $modification->load('attendance', 'breakModifications', 'additionalBreak');
-        return view('admin.admin_modification_request', compact('modification'));
+        return view('admin.modification_request', compact('modification'));
     }
 
     public function csvExport(User $user)
@@ -85,18 +93,32 @@ class AdminController extends Controller
         $month = session()->get($sessionKey)->month;
         $attendances = $user->attendancesByMonth($year, $month);
 
-        foreach($attendances as $attendance) {
-            $date = Carbon::parse($attendance->date);
-            $row = [
-                $date->format('m/d') . '(' . $weekDays[$date->dayOfWeek] . ')',
-                Carbon::parse($attendance->punch_in)->format('H:i'),
-                Carbon::parse($attendance->punch_out)->format('H:i'),
-                $attendance->break_duration,
-                $attendance->work_duration
-            ];
+        $firstDayOfMonth = Carbon::createFromFormat('Y/m', $year . '/' . $month)->startOfMonth();
+        $lastDayOfMonth = $firstDayOfMonth->copy()->endOfMonth();
+
+        for ($date = $firstDayOfMonth->copy(); $date->lte($lastDayOfMonth); $date->addDay()) {
+            if($date->isToday()) {
+                break;
+            }
+
+            $attendance = $attendances->where('date', $date->copy()->format('Y-m-d'))->first();
+            if ($attendance) {
+                $row = [
+                    $date->format('m/d') . '(' . $weekDays[$date->dayOfWeek] . ')',
+                    Carbon::parse($attendance->punch_in)->format('H:i'),
+                    Carbon::parse($attendance->punch_out)->format('H:i'),
+                    $attendance->break_duration,
+                    $attendance->work_duration
+                ];
+            } else {
+                $row = [
+                    $date->format('m/d') . '(' . $weekDays[$date->dayOfWeek] . ')',
+                    '休',
+                ];
+            }
             array_push($exportData, $row);
         }
-
+ 
         $stream = fopen('php://temp', 'r+b');
         foreach ($exportData as $row) {
             fputcsv($stream, $row);

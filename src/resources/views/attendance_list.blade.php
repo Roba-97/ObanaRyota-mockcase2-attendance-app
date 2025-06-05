@@ -20,18 +20,18 @@
     <div class="attendance-list__month-nav">
         <div class="attendance-list__last-month">
             <a href="/attendance/list?month=previous">
-                <img class="month-nav__icon-arrow" src="{{ asset('img/arrow.png')}}" alt="">
+                <i class="fa-solid fa-arrow-left-long month-nav__icon-arrow"></i>
                 <span>前月</span>
             </a>
         </div>
         <div class="attendance-list__show-month">
-            <img class="month-nav__icon-calender" src="{{ asset('img/calender.png')}}" alt="">
+            <img class="month-nav__icon-calender" src="{{ asset('img/calendar.png')}}" alt="">
             <span>{{ $displayedMonth }}</span>
         </div>
-        <div class="attendance-list__next-month">
+        <div @class(['attendance-list__next-month', 'attendance-list__next-month--hidden'=> \Carbon\Carbon::createFromFormat('Y/m', $displayedMonth)->isCurrentMonth()])>
             <a href="/attendance/list?month=next">
                 <span>翌月</span>
-                <img class="month-nav__icon-arrow month-nav__icon-arrow--rotate" src="{{ asset('img/arrow.png')}}" alt="">
+                <i class="fa-solid fa-arrow-right-long month-nav__icon-arrow"></i>
             </a>
         </div>
     </div>
@@ -44,20 +44,45 @@
             <th class="attendance-list__table-header">合計</th>
             <th class="attendance-list__table-header">詳細</th>
         </tr>
-        @foreach ($attendances as $attendance)
+
+        @php
+        $weekDays = ['日', '月', '火', '水', '木', '金', '土'];
+        $firstDayOfMonth = \Carbon\Carbon::createFromFormat('Y/m', $displayedMonth)->startOfMonth();
+        $lastDayOfMonth = $firstDayOfMonth->copy()->endOfMonth();
+        @endphp
+
+        @for ($date = $firstDayOfMonth->copy(); $date->lte($lastDayOfMonth); $date->addDay())
+        @php
+        if($date->isFuture()) {
+        break;
+        }
+        $attendance = $attendances->where('date', $date->copy()->format('Y-m-d'))->first();
+        @endphp
         <tr class="attendance-list__table-row">
-            @php
-            $weekDays = ['日', '月', '火', '水', '木', '金', '土'];
-            $date = \Carbon\Carbon::parse($attendance->date);
-            @endphp
-            <td class="attendance-list__table-text">{{ $date->format('m/d') }}({{ $weekDays[$date->dayOfWeek] }})</td>
+            <td @class(['attendance-list__table-text', 'attendance-list__table-text--saturday'=> $date->isSaturday(), 'attendance-list__table-text--sunday' => $date->isSunday()]) >
+                {{ $date->format('m/d') }}({{ $weekDays[$date->dayOfWeek] }})
+            </td>
+            @if ($attendance)
             <td class="attendance-list__table-text">{{ \Carbon\Carbon::parse($attendance->punch_in)->format('H:i'); }}</td>
-            <td class="attendance-list__table-text">{{ \Carbon\Carbon::parse($attendance->punch_out)->format('H:i') }}</td>
+            <td class="attendance-list__table-text">{{ $attendance->status === 3 ? \Carbon\Carbon::parse($attendance->punch_out)->format('H:i') : '' }}</td>
             <td class="attendance-list__table-text">{{ $attendance->break_duration }}</td>
-            <td class="attendance-list__table-text">{{ $attendance->work_duration }}</td>
+            <td class="attendance-list__table-text">{{ $attendance->status === 3 ? $attendance->work_duration : '' }}</td>
             <td class="attendance-list__table-text attendance-list__table-text--bold"><a href="/attendance/{{ $attendance->id }}">詳細</a></td>
+            @else
+            <td class="attendance-list__table-text">
+                @if($date->isToday())
+                勤務外
+                @else
+                休
+                @endif
+            </td>
+            <td class="attendance-list__table-text">ー</td>
+            <td class="attendance-list__table-text">ー</td>
+            <td class="attendance-list__table-text">ー</td>
+            <td class="attendance-list__table-text">ー</td>
+            @endif
         </tr>
-        @endforeach
+        @endfor
     </table>
 </div>
 

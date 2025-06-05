@@ -29,7 +29,6 @@ class AdminAttendanceListTest extends DuskTestCase
         foreach($this->users as $user) {
             $this->createAttendance($user, Carbon::today());
             $this->createAttendance($user, Carbon::yesterday());
-            $this->createAttendance($user, Carbon::tomorrow());
         }
     }
 
@@ -53,30 +52,13 @@ class AdminAttendanceListTest extends DuskTestCase
             }
         });
 
-        // 「翌日」押下時の確認
-        $this->browse(function (Browser $browser) use ($admin, $users) {
-            $browser = $browser->loginAs($admin, 'admin')
-                ->visit('/admin/attendance/list')
-                ->clickLink('翌日')
-                ->assertSee(Carbon::tomorrow()->format('Y/m/d'));
-            
-            foreach ($users as $user) {
-                $attendance = $user->attendances()->where('date', Carbon::tomorrow()->format('Y-m-d'))->first();
-                $browser->assertSee($user->name)
-                    ->assertSee(Carbon::parse($attendance->punch_in)->format('H:s'))
-                    ->assertSee(Carbon::parse($attendance->punch_in)->format('H:s'))
-                    ->assertSee($attendance->getBreakDurationAttribute())
-                    ->assertSee($attendance->getWorkDurationAttribute());
-            }
-        });
-
-        // 「前日」押下時の確認
         $this->browse(function (Browser $browser) use ($admin, $users) {
             $browser = $browser->loginAs($admin, 'admin')
                 ->visit('/admin/attendance/list')
                 ->clickLink('前日')
                 ->assertSee(Carbon::yesterday()->format('Y/m/d'));
-
+            
+            // 「前日」押下時の確認
             foreach ($users as $user) {
                 $attendance = $user->attendances()->where('date', Carbon::yesterday()->format('Y-m-d'))->first();
                 $browser->assertSee($user->name)
@@ -85,6 +67,9 @@ class AdminAttendanceListTest extends DuskTestCase
                     ->assertSee($attendance->getBreakDurationAttribute())
                     ->assertSee($attendance->getWorkDurationAttribute());
             }
+
+            // 「翌日」押下時の確認（今日の日付に戻る）
+            $browser->clickLink('翌日')->assertSee(Carbon::today()->format('Y/m/d'));
         });
     }
 }

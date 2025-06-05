@@ -17,7 +17,7 @@ class TestAdminSeeder extends Seeder
     {
         Admin::create([
             'name' => 'Test Admin',
-            'email' => 'testAdmin@example.com',
+            'email' => 'admin@example.com',
             'password' => bcrypt('password'),
             'email_verified_at' => Carbon::now(),
         ]);

@@ -15,13 +15,13 @@
     font-weight: 700;
 }
 
-.staff-attendance__last-month,
-.staff-attendance__next-month {
-    margin: 0 25px;
+.staff-attendance__last-month, .staff-attendance__next-month {
+    margin: 0 15px;
 }
-
-.staff-attendance__last-month a,
-.staff-attendance__next-month a {
+.staff-attendance__next-month--hidden {
+    visibility: hidden;
+}
+.staff-attendance__last-month a, .staff-attendance__next-month a {
     color: #737373;
     font-size: 1.6rem;
     font-weight: 700;
@@ -30,14 +30,7 @@
 
 .month-nav__icon-arrow {
     display: inline-block;
-    margin: 0 10px 0 0;
-    width: 20px;
-    height: 15px;
-}
-
-.month-nav__icon-arrow--rotate {
-    margin: 0 0 0 10px;
-    transform: rotate(180deg);
+    margin: 0 5px;
 }
 
 .month-nav__icon-calender {
@@ -58,11 +51,9 @@
 .staff-attendance__table-row {
     border-bottom: solid 2px #E1E1E1;
 }
-
 .staff-attendance__table-row:first-of-type {
     border-bottom: solid 3px #E1E1E1;
 }
-
 .staff-attendance__table-row:last-of-type {
     border-bottom: none;
 }
@@ -82,7 +73,12 @@
     font-weight: 700;
     text-align: center;
 }
-
+.staff-attendance__table-text--saturday {
+    color: #0000FF80;
+}
+.staff-attendance__table-text--sunday {
+    color: #FF000080;
+}
 .staff-attendance__table-text:last-of-type a {
     color: #000000;
     text-decoration: none;
@@ -99,4 +95,15 @@
     font-size: 2.2rem;
     font-weight: 700;
     text-decoration: none;
+}
+
+@media screen and (max-width: 950px) {
+    .staff-attendance__month-nav {
+        margin: 30px 0;
+        min-height: 45px;
+    }
+
+    .month-nav__icon-calender {
+        height: 20px;
+    }
 }

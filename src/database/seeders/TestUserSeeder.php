@@ -12,6 +12,19 @@ use Illuminate\Database\Seeder;
 
 class TestUserSeeder extends Seeder
 {
+    private const NUM_PAST_MONTH = 6;
+    private const CREATE_MODIFICATION_RATE = 7;
+
+    private $punchInHourOptions = [8, 9, 10, 11];
+    private $punchOutHourOptions = [17, 18, 19, 20];
+    private $breakInHourOptions = [12, 13, 14];
+    private $commentOptions = [
+        '打刻忘れ',
+        '体調不良による遅刻',
+        '電車遅延による、勤務時刻の修正',
+        'システム障害により打刻システムが利用できず、復旧後に正しい時刻で打刻修正を依頼しました。'
+    ];
+
     /**
      * Run the database seeds.
      *
@@ -26,67 +39,69 @@ class TestUserSeeder extends Seeder
             'email_verified_at' => Carbon::now(),
         ]);
 
-        // 初期値：今月の月初日
-        $previous = Carbon::now()->copy()->startOfMonth()->subMonths(3); // 3ヶ月前の月初
-        $next = Carbon::now()->copy()->startOfMonth()->addMonths(1);     // 来月の月初
+        $endDate = Carbon::yesterday();
+        $startDate = Carbon::yesterday()->copy()->subMonths(self::NUM_PAST_MONTH)->firstOfMonth();
+        $date = $startDate->copy();
 
-        for ($i = 0; $i < 3; $i++) {
-            $startDateOfPreviousMonth = $previous->copy()->startOfMonth();
-            while (!$startDateOfPreviousMonth->isLastOfMonth()) {
-                if (!$startDateOfPreviousMonth->isWeekend()) {
-                    $attendance = Attendance::create([
-                        'user_id' => $user->id,
-                        'date' => $startDateOfPreviousMonth->format('Y-m-d'),
-                        'punch_in' => '09:00:00',
-                        'punch_out' => '18:00:00',
-                        'status' => 3,
-                    ]);
-                    $break = BreakTime::create([
-                        'attendance_id' => $attendance->id,
-                        'start_at' => '12:00:00',
-                        'end_at' => '13:00:00',
-                        'is_ended' => true,
-                    ]);
-                    if ($startDateOfPreviousMonth->isMonday()) {
-                        $modification = Modification::create([
-                            'attendance_id' => $attendance->id,
-                            'modified_punch_in' => '10:00:00',
-                            'modified_punch_out' => '19:00:00',
-                            'comment' => '電車遅延のため',
-                            'application_date' => Carbon::today()->format('Y-m-d'),
-                        ]);
-                        BreakModification::create([
-                            'modification_id' => $modification->id,
-                            'break_id' => $break->id,
-                            'modified_start_at' => '15:00:00',
-                            'modified_end_at' => '16:00:00',
-                        ]);
-                    }
-                }
-                $startDateOfPreviousMonth->addDay();
+        while ($date->lte($endDate)) {
+            if ($date->isWeekend()) {
+                $date->addDay();
+                continue;
             }
-            $previous->addMonth();
 
-            $startDateOfNextMonth = $next->copy()->startOfMonth();
-            while (!$startDateOfNextMonth->isLastOfMonth()) {
-                if (!$startDateOfNextMonth->isWeekend()) {
-                    $attendance = Attendance::create([
-                        'user_id' => $user->id,
-                        'date' => $startDateOfNextMonth->format('Y-m-d'),
-                        'punch_in' => '09:00:00',
-                        'punch_out' => '18:00:00',
-                        'status' => 3,
-                    ]);
-                    BreakTime::create([
-                        'attendance_id' => $attendance->id,
-                        'start_at' => '12:00:00',
-                        'end_at' => '13:00:00',
-                        'is_ended' => true,
-                    ]);
-                }
-                $startDateOfNextMonth->addDay();
+            $punchInHour = $this->punchInHourOptions[array_rand($this->punchInHourOptions)];
+            $punchInMinute = rand(0, 59);
+            $punchIn = $date->copy()->setTime($punchInHour, $punchInMinute, 0);
+
+            $punchOutHour = $this->punchOutHourOptions[array_rand($this->punchOutHourOptions)];
+            $punchOutMinute = rand(0, 59);
+            $punchOut = $date->copy()->setTime($punchOutHour, $punchOutMinute);
+
+            $attendance = Attendance::create([
+                'user_id' => $user->id,
+                'date' => $date->format('Y-m-d'),
+                'punch_in' => $punchIn->startOfMinute()->format('H:i:s'),
+                'punch_out' => $punchOut->startOfMinute()->format('H:i:s'),
+                'status' => 3,
+            ]);
+
+            $breakInHour = $this->breakInHourOptions[array_rand($this->breakInHourOptions)];
+            $breakInMinute = rand(0, 59);
+            $breakIn = $date->copy()->setTime($breakInHour, $breakInMinute);
+            $breakOut = $breakIn->copy()->addMinutes(rand(30, 75));
+
+            $break = BreakTime::create([
+                'attendance_id' => $attendance->id,
+                'start_at' => $breakIn->startOfMinute()->format('H:i:s'),
+                'end_at' => $breakOut->startOfMinute()->format('H:i:s'),
+                'is_ended' => true,
+            ]);
+
+            if (rand(0, 100) < self::CREATE_MODIFICATION_RATE) {
+                $modifiedPunchIn = $punchIn->copy()->addMinutes(rand(-60, 60));
+                $modifiedPunchOut = $punchOut->copy()->addMinutes(rand(-60, 60));
+                $comment = $this->commentOptions[array_rand($this->commentOptions)];
+
+                $modification = Modification::create([
+                    'attendance_id' => $attendance->id,
+                    'modified_punch_in' => $modifiedPunchIn->startOfMinute()->format('H:i:s'),
+                    'modified_punch_out' => $modifiedPunchOut->startOfMinute()->format('H:i:s'),
+                    'comment' => $comment,
+                    'application_date' => $date->copy()->addDay()->format('Y-m-d'),
+                ]);
+
+                $shiftMinutes = rand(-30, 30);
+                $modifiedBreakIn = $breakIn->copy()->addMinutes($shiftMinutes);
+                $modifiedBreakOut = $breakOut->copy()->addMinutes($shiftMinutes);
+
+                BreakModification::create([
+                    'modification_id' => $modification->id,
+                    'break_id' => $break->id,
+                    'modified_start_at' => $modifiedBreakIn->startOfMinute()->format('H:i:s'),
+                    'modified_end_at' => $modifiedBreakOut->startOfMinute()->format('H:i:s'),
+                ]);
             }
-            $next->addMonth();
+            $date->addDay();
         }
     }
 }
