@@ -1,25 +1,17 @@
 # CoachTech 勤怠管理アプリ
 
 ## 環境構築
-
-### Docker環境構築(ビルド)
 1. `git clone https://github.com/Roba-97/ObanaRyota-mockcase1-furima-app.git`
-2. Docker Desctop アプリを起動して `docker-compose up -d --build`
+2. Docker Desctop アプリを起動
+3. プロジェクト直下で `make init`
 
-### Laravel環境構築
-1. `docker-compose exec php bash`
-2. `composer install`
-3. .env.exampleをコピーして「.env」ファイルを作成し以下の環境変数を設定
-``` copy
-DB_CONNECTION=mysql
-DB_HOST=mysql
-DB_PORT=3306
-DB_DATABASE=laravel_db
-DB_USERNAME=laravel_user
-DB_PASSWORD=laravel_pass
-```
-4. `php artisan key:generate`
-5. `php artisan migrate --seed`
+ダミーデータの作成まで完了し、勤怠管理アプリの動作確認が可能です
+
+## 動作確認時における注意事項
+- 勤怠登録画面において **「出勤」「退勤」「休憩」ボタンを短時間に何度も続けてクリックしないでください。**
+- 勤怠詳細画面において **「修正」ボタンをボタンを短時間に何度も続けてクリックしないでください。**
+
+いずれもシステムの誤動作を引き起こす可能性があります
 
 ## 使用技術
 - PHP 7.4.9

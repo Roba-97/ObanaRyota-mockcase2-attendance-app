@@ -17,6 +17,7 @@ class CreateAttendancesTable extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained();
             $table->date('date');
+            $table->unique(['user_id', 'date']);
             $table->time('punch_in');
             $table->time('punch_out');
             $table->tinyInteger('status');  // 1:勤務中, 2:休憩中, 3:退勤済み
