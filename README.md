@@ -1,7 +1,7 @@
 # CoachTech 勤怠管理アプリ
 
 ## 環境構築
-1. `git clone https://github.com/Roba-97/ObanaRyota-mockcase1-furima-app.git`
+1. `git clone https://github.com/Roba-97/ObanaRyota-mockcase2-attendance-app.git`
 2. Docker Desctop アプリを起動
 3. プロジェクト直下で `make init`
 
@@ -9,7 +9,7 @@
 
 ## 動作確認時における注意事項
 - 勤怠登録画面において **「出勤」「退勤」「休憩」ボタンを短時間に何度も続けてクリックしないでください。**
-- 勤怠詳細画面において **「修正」ボタンをボタンを短時間に何度も続けてクリックしないでください。**
+- 勤怠詳細画面において **「修正」ボタンを短時間に何度も続けてクリックしないでください。**
 
 いずれもシステムの誤動作を引き起こす可能性があります
 
@@ -59,10 +59,8 @@
   | ID | 内容番号 | ディレクトリ | ファイル名 |
   | --- | --- | --- | --- |
   | 1 | all | Feature | UserRegistrationTest.php |
-  | 2 | all | Feature | AuthenticationTest.php |
-  | 3 | all | Feature | AuthenticationTest.php |
-  | 4 | all | Feature | AttendanceViewTest.php |
-  | 5 | all | Feature | AttendanceViewTest.php |
+  | 2,3 | all | Feature | AuthenticationTest.php |
+  | 4,5 | all | Feature | AttendanceViewTest.php |
   | 6,7,8 | 最後以外<br>最後 | Browser<br>Feature | StampTest.php<br>StampConfirmTest.php |
   | 9 | all | Browser | UserAttendanceListTest.php |
   | 10 | all | Feature | AttendanceDetailTest.php |
